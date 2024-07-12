@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('background-image.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #272727;
+        }
+        header {
+            background: url('header-image.png') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 0.5em 0; /* Reduced padding */
+            text-align: center;
+        }
+        nav {
+            background-color:  #F7F1E5;
+            overflow: hidden;
+        }
+        nav a {
+            float: left;
+            display: block;
+            color:#272727;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        main {
+            padding: 20px;
+        }
+        article {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        footer {
+            background-color: #127575;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        .tags {
+            margin-top: 10px;
+        }
+        .tags span {
+            background-color: #eee;
+            border-radius: 3px;
+            padding: 5px 10px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .tags span:hover {
+            background-color: #ddd;
+        }
+        .filter {
+            margin-bottom: 20px;
+        }
+        .filter span {
+            background-color: #14639E;
+            color: white;
+            border-radius: 3px;
+            padding: 5px 10px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .filter span:hover {
+            background-color: #14639E;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>‎‎ <h1>
+</header>
+
+<!-- MUST BEFIXED THIS IS THE WORST SOLUTION -->
+ 
+<nav>
+    <a href="index.html">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+
+
+<main>
+    <h2>Blog Posts</h2>
+
+    
+    <div class="filter">
+        <span onclick="filterPosts('All')">All</span>
+        <span onclick="filterPosts('AI')">AI</span>
+        <!-- Add more tags as needed -->
+    </div>
+    
+    <article class="post" data-tags="AI, " data-date="2024-07-12">
+        <h3>Kaggle House Prices - Advanced Regression Techniques</h3>
+        <p>Published on: July 12th, 2024</p>
+        <p>Recently worked with regression for <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/submissions#" target="_blank">this</a> Kaggle Competition:</p>
+        <p>My Code, hosted here: <a href=" https://github.com/EthanCui2008/Kaggle/tree/Main/house-prices-advanced-regression-techniques%20(1)" target="_blank">Github</a></p>
+        <p>I earned a score of 0.251, mildly disappointing, but i'll accept this for now, irritatingly the accuracy for my model refused to dip below 12% [Average difference between actual and predictde] or so for my data, it turned out atleast for a dense neural network, I personally couldn't improve it much. I will probably return at some point.</p>
+
+        <div class="tags">
+            <span>AI</span>
+        </div>
+    </article>
+
+</main>
+
+<script>
+    function filterPosts(tag) {
+        var posts = document.getElementsByClassName('post');
+        for (var i = 0; i < posts.length; i++) {
+            var post = posts[i];
+            var tags = post.getAttribute('data-tags').split(', ');
+            if (tag === 'All' || tags.includes(tag)) {
+                post.style.display = '';
+            } else {
+                post.style.display = 'none';
+            }
+        }
+    }
+
+    function sortPosts(order) {
+        var blogPosts = document.getElementById('blogPosts');
+        var posts = Array.from(blogPosts.getElementsByClassName('post'));
+        posts.sort(function(a, b) {
+            var dateA = new Date(a.getAttribute('data-date'));
+            var dateB = new Date(b.getAttribute('data-date'));
+            return (order === 'asc') ? dateA - dateB : dateB - dateA;
+        });
+        posts.forEach(function(post) {
+            blogPosts.appendChild(post);
+        });
+    }
+
+    // Initialize with showing all posts
+    filterPosts('All');
+</script>
+
+</body>
+</html>
