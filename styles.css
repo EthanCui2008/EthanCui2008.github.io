@@ -54,7 +54,7 @@ article {
     padding-right: 20px;  /* Right padding */
     padding-bottom: 10px; /* Bottom padding */
     padding-left: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -107,4 +107,46 @@ h2 {
     padding-bottom: 0px; /* Optional: Reduce padding below the paragraph */
     margin-bottom: 5px;  /* Optional: Reduce margin below the paragraph */
 }
+h3 {
+    color: #c7c1b4;
+    font-size: 60px; /* Adjust the size as needed */
+    padding-top: 0px; /* Reduce padding above the paragraph */
+    margin-top: 5px;  /* Reduce margin above the paragraph */
+    padding-bottom: 0px; /* Optional: Reduce padding below the paragraph */
+    margin-bottom: 5px;  /* Optional: Reduce margin below the paragraph */
+    text-align: center;
+}
 
+.button-container {
+    display: flex;
+    gap: 20px; /* Space between buttons */
+}
+
+.image-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border: none;
+    background-color: #1f317b;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from links */
+    color: #f3fbff; /* Text color */
+    transition: background-color 0.3s, box-shadow 0.3s;
+    border-radius: 5px;
+}
+
+.image-button:hover {
+    background-color: #334aa5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button-icon {
+    margin-right: 10px; /* Space between the image and the text */
+    width: 16px; /* Set the width to 16px */
+    height: 16px; /* Set the height to 16px */
+}
+
+.image-button span {
+    font-size: 16px;
+}
