@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Blog</title>
     <style>
         body {
             font-family: 'Montserrat';
@@ -21,14 +20,16 @@
             height: 100%;
         }
         header {
-            background: url('header-image.png') no-repeat center center;
-            background-size: cover;
-            color: white;
-            padding: 0.5em 0; /* Reduced padding */
-            text-align: center;
+            width: 100%;
+            overflow: hidden; /* Ensures no overflow issues */
         }
+        header img {
+            width: 100%; /* Ensures the image takes the full width of the header */
+            height: auto; /* Maintains aspect ratio */
+            display: block; /* Removes the small gap below the image */
+        }
+
         nav {
-            background-color:  #F7F1E5;
             overflow: hidden;
         }
         nav a {
@@ -40,7 +41,6 @@
             text-decoration: none;
         }
         nav a:hover {
-            background-color: #ddd;
             color: black;
         }
         main {
@@ -53,15 +53,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
         }
-        footer {
-            background-color: #127575;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
+        
         .tags {
             margin-top: 10px;
         }
@@ -78,34 +70,18 @@
         .filter {
             margin-bottom: 20px;
         }
-        .filter span {
-            background-color: #14639E;
-            color: white;
-            border-radius: 3px;
-            padding: 5px 10px;
-            margin-right: 5px;
-            cursor: pointer;
-        }
-        .filter span:hover {
-            background-color: #14639E;
-        }
     </style>
 </head>
 <body>
-
+    
 <header>
-    <h1>‎‎ <h1>
+    <img src="header-image.png" alt="Header Image">
 </header>
 
-<!-- MUST BEFIXED THIS IS THE WORST SOLUTION -->
- 
 <nav>
     <a href="index.html">Home</a>
     <a href="blog.html">Blog</a>
-    <a href="#contact">Contact</a>
 </nav>
-
-
 
 <main>
     <h2>Blog Posts</h2>
@@ -120,6 +96,25 @@
         <!-- Add more tags as needed -->
     </div>
     
+    <article class="post" data-tags="" data-date="2024-07-16">
+        <h3>Sine Waves</h3>
+        <p>Published on: July 16th, 2024</p>
+        <p>The Sine Waves in the background of this website are procedurally generated, I did this because I wanted the website to look cool. The Java Script file responsible for this is located <a href="https://github.com/EthanCui2008/EthanCui2008.github.io/blob/Main/scripts.js" target="_blank">Here</a> </p>
+        <p>The Random Generation means the waves can look like the hills of a forest or an ocean, it's very calming. </p>
+        <div class="tags">
+        </div>
+    </article>
+    
+    <article class="post" data-tags="AI, Reinforcement" data-date="2024-07-13">
+        <h3>Open AI gym</h3>
+        <p>Published on: July 13th, 2024</p>
+
+        <div class="tags">
+            <span>AI</span>
+            <span>Reinforcement</span>
+        </div>
+    </article>
+
     <article class="post" data-tags="AI, Regression" data-date="2024-07-12">
         <h3>Kaggle House Prices - Advanced Regression Techniques</h3>
         <p>Published on: July 12th, 2024</p>
@@ -133,15 +128,6 @@
         </div>
     </article>
 
-    <article class="post" data-tags="AI, Reinforcement" data-date="2024-07-13">
-        <h3>Open AI gym</h3>
-        <p>Published on: July 13th, 2024</p>
-
-        <div class="tags">
-            <span>AI</span>
-            <span>Reinforcement</span>
-        </div>
-    </article>
 </main>
 
 <script>

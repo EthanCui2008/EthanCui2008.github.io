@@ -1,0 +1,110 @@
+body {
+    font-family: 'Montserrat';
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-color: #F7F1E5;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+header {
+    width: 100%;
+    overflow: hidden; /* Ensures no overflow issues */
+}
+
+header img {
+    width: 100%; /* Ensures the image takes the full width of the header */
+    height: auto; /* Maintains aspect ratio */
+    display: block; /* Removes the small gap below the image */
+}
+
+nav {
+    overflow: hidden;
+}
+
+nav a {
+    float: left;
+    display: block;
+    color: #272727;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: black;
+}
+
+main {
+    padding: 20px;
+}
+
+article {
+    width: 60%; 
+    margin: 0 auto;
+    padding-top: 10px;    /* Top padding */
+    padding-right: 20px;  /* Right padding */
+    padding-bottom: 10px; /* Bottom padding */
+    padding-left: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.tags {
+    margin-top: 10px;
+}
+
+.tags span {
+    background-color: #eee;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.tags span:hover {
+    background-color: #ddd;
+}
+
+.filter {
+    margin-bottom: 20px;
+}
+
+article p {
+    color: #00223b;
+    font-size: 20px;
+    padding-top: 3px; /* Reduce padding above the paragraph */
+    margin-top: 5px;  /* Reduce margin above the paragraph */
+    padding-bottom:3px; /* Optional: Reduce padding below the paragraph */
+    margin-bottom: 5px;  /* Optional: Reduce margin below the paragraph */
+}
+
+h1 {
+    font-size: 60px; /* Adjust the size as needed */
+    padding-top: 0px; /* Reduce padding above the paragraph */
+    margin-top: 5px;  /* Reduce margin above the paragraph */
+    padding-bottom: 0px; /* Optional: Reduce padding below the paragraph */
+    margin-bottom: 5px;  /* Optional: Reduce margin below the paragraph */
+    background: linear-gradient(45deg, #1f317b,#0e8ced,#b6dacc,#b6dacc,#b6dacc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+h2 {
+    color: #003a63;
+    font-size: 20px; /* Adjust the size as needed */
+    padding-top: 0px; /* Reduce padding above the paragraph */
+    margin-top: 5px;  /* Reduce margin above the paragraph */
+    padding-bottom: 0px; /* Optional: Reduce padding below the paragraph */
+    margin-bottom: 5px;  /* Optional: Reduce margin below the paragraph */
+}
+

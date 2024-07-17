@@ -3,182 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Homepage</title>
-    <style>
-        body {
-            font-family: 'Montserrat';
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            background-color:  #F7F1E5;
-        }
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            width: 100%;
-            height: 100%;
-        }
-        header {
-            background: url('header-image.png') no-repeat center center;
-            background-size: cover;
-            color: white;
-            padding: 0.5em 0; /* Reduced padding */
-            text-align: center;
-        }
-        nav {
-            overflow: hidden;
-        }
-        nav a {
-            float: left;
-            display: block;
-            color:#272727;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        nav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-        main {
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-            margin: 20px;
-            border-radius: 10px;
-        }
-        article {
-            background-color: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        footer {
-            background-color: #127575;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-        .tags {
-            margin-top: 10px;
-        }
-        .tags span {
-            background-color: #eee;
-            border-radius: 3px;
-            padding: 5px 10px;
-            margin-right: 5px;
-            cursor: pointer;
-        }
-        .tags span:hover {
-            background-color: #ddd;
-        }
-        .filter {
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
-<header>
-    <h1>‎‎ <h1>
-</header>
-
 <body>
-<nav>
-    <a href="#home">Home</a>
-    <a href="blog.html">Blog</a>  <!-- Link to the blog section -->
-    <a href="#contact">Contact</a>
-</nav>
-<main>
-    <h2>Home</h2>
-    <p>Home Page of Ethan Cui</p>
-    <p>About Me: </p>
-    <p id="counter"> </p>
-    <script>
-        function updateCounter() {
-            const startDate = new Date(2008, 1, 18); // February 18 of the current year
-            const today = new Date();
-            if (today < startDate) {
-                startDate.setFullYear(startDate.getFullYear() - 1);
-            }
+    <link rel="stylesheet" href="styles.css">
+
+    <header>
+        <img src="header-image.png" alt="Header Image">
+    </header>
     
-            const diffTime = Math.abs(today - startDate);
-            const diffYears = today.getFullYear() - startDate.getFullYear();
-            const diffDays = Math.floor((diffTime / (1000 * 60 * 60 * 24)) - diffYears*365);
-            
-    
-            document.getElementById('counter').innerText = `${diffYears} years and ${diffDays} days since I was Born`;
-        }
-    
-        updateCounter();
-        setInterval(updateCounter, 24 * 60 * 60 * 1000); // Update every day
-    </script>
-    <p>Hobbies: Coding, Model Kit Assembly, Basic Electronics</p>
-    <p>Current Projects: Working on Reinforcement Learning with robotics</p>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="blog.html">Blog</a> 
+    </nav>
 
+    <article>
+        <h2>Greetings! I'm</h2>
+        <h1>Ethan Cui </h1>
+        <p>I'm a Wannabe Coder, my online moniker is OrcaShamu</p>
+        <p id="counter"></p>
+        <p>Currently Working with AI [Reinforcment Learing] </p> <!-- Add Hyperlink to Project when you commit to git -->
+        <p>Projects in dev: This Website, Reinforcment Learning with Robotics, Chatbots</p>
+        <p>Phone: N/A atm</p>
+        <p>Email:  <a href:”orca.cccooommm@gmail.com”> orca.cccooommm@gmail.com [Personal]</a> </p>
+    </article>
 
-</main>
-<canvas id="sineWaveCanvas"></canvas>
-<script>
-    const canvas = document.getElementById('sineWaveCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    <canvas id="sineWaveCanvas"></canvas>
+    <script src="scripts.js"></script>
 
-    let phaseShift = 0;
-    const numberOfWaves = 4;
-    let wave_vals = [];
-    const depth = 30;
-
-    for (let i = 0; i < numberOfWaves; i++) {
-        let randomNumbers = [];
-        for (let j = 0; j < depth-i; j++) {
-            const randomval = ((Math.random()*4)+3)+(Math.random()*2)+2;
-            randomNumbers.push(randomval);
-        }
-        wave_vals.push(randomNumbers)
-    }
-
-    function drawSineWave() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        const amplitude = 70;
-        const frequency = 0.2;
-        
-        const shade_list = ['#1f317b' ,'#14639e' , '#84ccc9' , '#b6dacc'];
-        
-        for (let i = 0; i < numberOfWaves; i++) {
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height / 2 + i * 50);
-            for (let x = 0; x < canvas.width; x++) {
-                let y = 0;
-                for (let j = 0; j < depth-i; j++) {
-                    y += Math.sin(wave_vals[i][j]*(x/500) - ((((i+1)**1.05)) * phaseShift/20) + 500*wave_vals[i][j] );
-                }
-                y = (amplitude * y * frequency);
-                ctx.lineTo(x, (canvas.height / 2) + y + ((i**1.7) * 50)-100); 
-            }
-            ctx.lineTo(canvas.width, canvas.height); 
-            ctx.lineTo(0, canvas.height); 
-            ctx.closePath();
-            
-            ctx.fillStyle = shade_list[3-i];
-            
-            ctx.fill();
-        }
-
-        phaseShift += 0.01;
-        requestAnimationFrame(drawSineWave);
-    }
-
-    drawSineWave();
-</script>
 </body>
-</html>
 
- <!-- Created Using Mainly Chat-Gpt 4o -->
+</html>
