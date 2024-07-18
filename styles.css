@@ -1,5 +1,5 @@
 body {
-    font-family: 'Montserrat';
+    font-family: ' Work Sans, sans-serif';
     margin: 0;
     padding: 0;
     background-size: cover;
@@ -17,30 +17,13 @@ canvas {
 
 header {
     width: 100%;
-    overflow: hidden; /* Ensures no overflow issues */
-}
-
-header img {
-    width: 100%; /* Ensures the image takes the full width of the header */
-    height: auto; /* Maintains aspect ratio */
-    display: block; /* Removes the small gap below the image */
-}
-
-nav {
     overflow: hidden;
 }
 
-nav a {
-    float: left;
+header img {
+    width: 100%;
+    height: auto;
     display: block;
-    color: #272727;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-nav a:hover {
-    color: black;
 }
 
 main {
@@ -50,30 +33,13 @@ main {
 article {
     width: 60%; 
     margin: 0 auto;
-    padding-top: 10px;    /* Top padding */
-    padding-right: 20px;  /* Right padding */
-    padding-bottom: 10px; /* Bottom padding */
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
     padding-left: 20px;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-
-.tags {
-    margin-top: 10px;
-}
-
-.tags span {
-    background-color: #eee;
-    border-radius: 3px;
-    padding: 5px 10px;
-    margin-right: 5px;
-    cursor: pointer;
-}
-
-.tags span:hover {
-    background-color: #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .filter {
@@ -83,43 +49,62 @@ article {
 article p {
     color: #00223b;
     font-size: 20px;
-    padding-top: 3px; /* Reduce padding above the paragraph */
-    margin-top: 5px;  /* Reduce margin above the paragraph */
-    padding-bottom:3px; /* Optional: Reduce padding below the paragraph */
-    margin-bottom: 5px;  /* Optional: Reduce margin below the paragraph */
+    padding-top: 3px;
+    margin-top: 5px; 
+    padding-bottom:3px; 
+    margin-bottom: 5px; 
 }
 
 h1 {
-    font-size: 60px; /* Adjust the size as needed */
-    padding-top: 0px; /* Reduce padding above the paragraph */
-    margin-top: 5px;  /* Reduce margin above the paragraph */
-    padding-bottom: 0px; /* Optional: Reduce padding below the paragraph */
-    margin-bottom: 5px;  /* Optional: Reduce margin below the paragraph */
-    background: linear-gradient(45deg, #1f317b,#0e8ced,#b6dacc,#b6dacc,#b6dacc);
+    font-size: 60px; 
+    padding-top: 0px;
+    margin-top: 5px; 
+    padding-bottom: 0px; 
+    margin-bottom: 5px; 
+    background: linear-gradient(45deg, #1f317b,#0e8ced,#b6dacc,#b6dacc,#b6dacc,#b6dacc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 h2 {
-    color: #003a63;
-    font-size: 20px; /* Adjust the size as needed */
-    padding-top: 0px; /* Reduce padding above the paragraph */
-    margin-top: 5px;  /* Reduce margin above the paragraph */
-    padding-bottom: 0px; /* Optional: Reduce padding below the paragraph */
-    margin-bottom: 5px;  /* Optional: Reduce margin below the paragraph */
+    background: linear-gradient(45deg, #1f317b,#2867a2,#b6dacc,#b6dacc,#b6dacc,#b6dacc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 20px; 
+    padding-top: 0px;
+    margin-top: 5px; 
+    padding-bottom: 0px;
+    margin-bottom: 5px; 
 }
 h3 {
     color: #c7c1b4;
-    font-size: 60px; /* Adjust the size as needed */
-    padding-top: 0px; /* Reduce padding above the paragraph */
-    margin-top: 5px;  /* Reduce margin above the paragraph */
-    padding-bottom: 0px; /* Optional: Reduce padding below the paragraph */
-    margin-bottom: 5px;  /* Optional: Reduce margin below the paragraph */
+    font-size: 60px;
+    padding-top: 0px; 
+    margin-top: 5px;  
+    padding-bottom: 0px;
+    margin-bottom: 5px; 
     text-align: center;
+}
+h4 {
+    background: linear-gradient(45deg, #0e8ced,#0eb9ed,#b6dacc,#b6dacc,#b6dacc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 30px; 
+    padding-top: 20px;
+    margin-top: 5px; 
+    padding-bottom: 0px;
+    margin-bottom: 5px; 
+}
+.custom-link {
+    color: #2a44ad;
+
+}
+.custom-link:visited {
+    color: #465cb3;
 }
 
 .button-container {
     display: flex;
-    gap: 20px; /* Space between buttons */
+    gap: 20px;
 }
 
 .image-button {
@@ -127,24 +112,24 @@ h3 {
     align-items: center;
     padding: 10px 20px;
     border: none;
-    background-color: #1f317b;
+    background: linear-gradient(45deg, #1f317b,#27519f);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     cursor: pointer;
-    text-decoration: none; /* Remove underline from links */
-    color: #f3fbff; /* Text color */
+    text-decoration: none;
+    color: #f3fbff;
     transition: background-color 0.3s, box-shadow 0.3s;
     border-radius: 5px;
 }
 
 .image-button:hover {
-    background-color: #334aa5;
+    background: linear-gradient(45deg, #142052,#1c396e);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .button-icon {
-    margin-right: 10px; /* Space between the image and the text */
-    width: 16px; /* Set the width to 16px */
-    height: 16px; /* Set the height to 16px */
+    margin-right: 10px; 
+    width: 16px; 
+    height: 16px;
 }
 
 .image-button span {
@@ -153,8 +138,8 @@ h3 {
 
 .top-left-image {
     position: absolute;
-    top: 200;
+    top: 300;
     right: 20%;
     width: 15%;
-    box-sizing: border-box; /* Include the outline in the element's total width and height */
+    box-sizing: border-box;
 }

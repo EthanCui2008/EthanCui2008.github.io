@@ -1,21 +1,4 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    function updateCounter() {
-        const startDate = new Date(2008, 1, 18); // February 18 of the current year
-        const today = new Date();
-        if (today < startDate) {
-            startDate.setFullYear(startDate.getFullYear() - 1);
-        }
-
-        const diffTime = Math.abs(today - startDate);
-        const diffYears = today.getFullYear() - startDate.getFullYear();
-        const diffDays = Math.floor((diffTime / (1000 * 60 * 60 * 24)) - diffYears * 365);
-
-        document.getElementById('counter').innerText = `It has been ${diffYears} years and ${diffDays} days since I was born`;
-    }
-
-    updateCounter();
-    setInterval(updateCounter, 24 * 60 * 60 * 1000); // Update every day
-
     const canvas = document.getElementById('sineWaveCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
