@@ -21,7 +21,7 @@
         }
         header {
             width: 100%;
-            overflow: hidden; /* Ensures no overflow issues */
+            overflow: hidden;
         }
         header img {
             width: 100%; /* Ensures the image takes the full width of the header */
@@ -57,6 +57,7 @@
         .tags {
             margin-top: 10px;
         }
+
         .tags span {
             background-color: #eee;
             border-radius: 3px;
@@ -64,9 +65,11 @@
             margin-right: 5px;
             cursor: pointer;
         }
+
         .tags span:hover {
             background-color: #ddd;
         }
+        
         .filter {
             margin-bottom: 20px;
         }
@@ -92,7 +95,7 @@
         <span onclick="filterPosts('All')">All</span>
         <span onclick="filterPosts('AI')">AI</span>
         <span onclick="filterPosts('Regression')">Regression</span>
-        <span onclick="filterPosts('Reinforcement')">Reinforcement</span>
+        <span onclick="filterPosts('Reinforcement Learning')">Reinforcement Learning</span>
 
         <!-- Add more tags as needed -->
     </div>
@@ -106,13 +109,13 @@
         </div>
     </article>
     
-    <article class="post" data-tags="AI, Reinforcement" data-date="2024-07-13">
+    <article class="post" data-tags="AI, Reinforcement Learning" data-date="2024-07-13">
         <h3>Open AI gym</h3>
         <p>Published on: July 13th, 2024</p>
 
         <div class="tags">
             <span>AI</span>
-            <span>Reinforcement</span>
+            <span>Reinforcement Learning</span>
         </div>
     </article>
 
