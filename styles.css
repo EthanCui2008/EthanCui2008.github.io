@@ -1,9 +1,3 @@
-@font-face {
-    font-family: 'visbyround';
-    src: url('VisbyRoundCF-Bold.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
 
 * {
     margin: 0;
