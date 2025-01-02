@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             ctx.fill();
         }
 
-        phaseShift += 0.01;
+        phaseShift += 0.025;
         requestAnimationFrame(drawSineWave);
     }
 
