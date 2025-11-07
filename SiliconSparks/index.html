@@ -12,64 +12,40 @@
 
   <style>
     :root {
-      --brand:#0d6efd;      /* header */
-      --brand-dark:#0a58ca; /* hover */
+      --brand:#0d6efd;
+      --brand-dark:#0a58ca;
       --bg:#f7f8fb;
       --text:#1f2937;
       --muted:#6b7280;
       --ring: rgba(13,110,253,0.25);
     }
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
+    html, body { height: 100%; margin: 0; padding: 0; }
     body {
-      margin: 0; font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: var(--text); background: var(--bg);
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; 
+      color: var(--text); 
+      background: var(--bg);
     }
-    header {
-      position: sticky; top: 0; z-index: 20;
-      display: flex; align-items: center; gap: .8rem;
-      padding: .9rem 1.1rem; background: var(--brand); color: #fff;
-      box-shadow: 0 2px 12px rgba(0,0,0,.1);
-    }
-    header .logo {
-      width: 28px; height: 28px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center;
-      background: #fff; color: var(--brand); font-weight: 800; letter-spacing: -0.5px;
-    }
-    header h1 { margin: 0; font-size: 1.05rem; letter-spacing: .2px; }
-    header nav { margin-left: auto; display: flex; gap: .6rem; }
-    header nav a { color: #fff; text-decoration: none; padding: .35rem .6rem; border-radius: .5rem; }
-    header nav a:hover { background: var(--brand-dark); }
 
-    .wrap { height: calc(100dvh - 64px); /* fallback, updated by JS */ }
+    .wrap { width: 100%; height: 100vh; }
     iframe.app {
       width: 100%; height: 100%; border: 0; background: #fff; display: block;
     }
 
     .fallback {
-      display: none; padding: 2rem; max-width: 800px; margin: 10vh auto; text-align: center; background: #fff; border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.06);
+      display: none; padding: 2rem; max-width: 800px; margin: 10vh auto; text-align: center; 
+      background: #fff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.06);
     }
     .fallback h2 { margin-top: 0; }
     .btn {
-      display: inline-block; margin-top: 1rem; padding: .7rem 1rem; border-radius: .7rem; background: var(--brand); color:#fff; text-decoration: none;
-      box-shadow: 0 6px 18px var(--ring);
+      display: inline-block; margin-top: 1rem; padding: .7rem 1rem; border-radius: .7rem; 
+      background: var(--brand); color:#fff; text-decoration: none; box-shadow: 0 6px 18px var(--ring);
     }
     .btn:hover { background: var(--brand-dark); }
     .note { color: var(--muted); font-size: .95rem; margin-top: .8rem; }
-
-    footer { text-align: center; color: var(--muted); font-size: .9rem; padding: 1.2rem; }
   </style>
 </head>
 <body>
-  <header>
-    <!-- If you add /favicon.ico, it will also show in the browser tab. The square below is a simple in-header mark. Replace with an <img> if you have a logo svg/png. -->
-    <span class="logo" aria-hidden="true">FLL</span>
-    <h1>Palo Alto FLL Hub</h1>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#support">Support</a>
-    </nav>
-  </header>
-
   <div class="wrap">
     <iframe
       class="app"
@@ -80,11 +56,11 @@
       ></iframe>
   </div>
 
-  <!-- Fallback content shown if the app refuses to load in an iframe (X-Frame-Options/CSP) or stalls. -->
+  <!-- Fallback content shown if the app refuses to load in an iframe -->
   <section class="fallback" id="fallback">
     <h2>Open the Palo Alto FLL Hub</h2>
     <p>
-      It looks like the app can’t be embedded here (some sites block loading inside another page). You can open it directly instead.
+      It looks like the app can't be embedded here (some sites block loading inside another page). You can open it directly instead.
     </p>
     <p>
       <a class="btn" href="https://innovate-spark-crew-09034.lovable.app/" target="_blank" rel="noopener">Open Hub in a new tab</a>
@@ -92,44 +68,8 @@
     <p class="note">If you own the external app, allow same-origin embeds or set a relaxed <code>frame-ancestors</code> CSP to enable embedding.</p>
   </section>
 
-  <footer>
-    © <span id="year"></span> Palo Alto FLL Hub
-  </footer>
-
   <script>
     (function() {
-      const header = document.querySelector('header');
       const wrap = document.querySelector('.wrap');
       const iframe = document.querySelector('iframe.app');
-      const fallback = document.getElementById('fallback');
-      const YEAR = new Date().getFullYear();
-      document.getElementById('year').textContent = YEAR;
-
-      function size() {
-        const h = header.getBoundingClientRect().height || 64;
-        wrap.style.height = Math.max(320, window.innerHeight - h) + 'px';
-      }
-      window.addEventListener('resize', size, { passive: true });
-      size();
-
-      // Show fallback if no load event fires in a reasonable time (likely blocked by X-Frame-Options/CSP)
-      let loaded = false;
-      const timer = setTimeout(() => {
-        if (!loaded) {
-          fallback.style.display = 'block';
-          wrap.style.display = 'none';
-        }
-      }, 2500);
-
-      iframe.addEventListener('load', () => {
-        loaded = true;
-        clearTimeout(timer);
-      });
-    })();
-  </script>
-
-  <!-- Optional: quick About/Support anchors for the header links -->
-  <div id="about" style="display:none">About the Palo Alto FLL Hub</div>
-  <div id="support" style="display:none">For help, use the “Open Hub” button above if the embed is blocked.</div>
-</body>
-</html>
+      const fallback = document.
