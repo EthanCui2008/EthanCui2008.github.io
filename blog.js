@@ -60,23 +60,22 @@ async function loadBlogPosts() {
     const blogContainer = document.getElementById('blog-container');
 
     try {
-        // Fetch the blog directory listing
-        const response = await fetch('./blog/');
-        const text = await response.text();
-
-        // Parse the HTML to find .txt files
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const links = Array.from(doc.querySelectorAll('a'))
-            .map(a => a.getAttribute('href'))
-            .filter(href => href && href.endsWith('.txt'));
+        // Fetch the manifest to get list of blog posts
+        const manifestResponse = await fetch('./blog/manifest.json');
+        if (!manifestResponse.ok) {
+            throw new Error('Could not load blog manifest');
+        }
+        const manifest = await manifestResponse.json();
 
         const posts = [];
 
-        // Load each blog post
-        for (const file of links) {
+        // Load each blog post listed in manifest
+        for (const file of manifest.posts) {
             try {
                 const postResponse = await fetch(`./blog/${file}`);
+                if (!postResponse.ok) {
+                    throw new Error(`Could not load ${file}`);
+                }
                 const postText = await postResponse.text();
                 const post = parseBlogPost(postText, file);
                 posts.push(post);
