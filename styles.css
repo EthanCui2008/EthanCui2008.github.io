@@ -200,6 +200,19 @@ article p {
     max-height: none;
 }
 
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #0e8ced;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.back-link:hover {
+    color: #0eb9ed;
+}
+
 /* Responsive Adjustments */
 @media (min-width: 768px) {
     article {
