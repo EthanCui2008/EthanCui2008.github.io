@@ -61,24 +61,28 @@ async function loadBlogPosts() {
 
     try {
         // Fetch the manifest to get list of blog posts
-        const manifestResponse = await fetch('./blog/manifest.json');
+        const manifestResponse = await fetch('blog/manifest.json');
         if (!manifestResponse.ok) {
+            console.error('Manifest response not ok:', manifestResponse.status);
             throw new Error('Could not load blog manifest');
         }
         const manifest = await manifestResponse.json();
+        console.log('Loaded manifest:', manifest);
 
         const posts = [];
 
         // Load each blog post listed in manifest
         for (const file of manifest.posts) {
             try {
-                const postResponse = await fetch(`./blog/${file}`);
+                const postResponse = await fetch(`blog/${file}`);
                 if (!postResponse.ok) {
+                    console.error(`Post response not ok for ${file}:`, postResponse.status);
                     throw new Error(`Could not load ${file}`);
                 }
                 const postText = await postResponse.text();
                 const post = parseBlogPost(postText, file);
                 posts.push(post);
+                console.log('Loaded post:', post.title);
             } catch (error) {
                 console.error(`Error loading blog post ${file}:`, error);
             }
@@ -86,6 +90,8 @@ async function loadBlogPosts() {
 
         // Sort posts by date (newest first)
         posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        console.log('Total posts loaded:', posts.length);
 
         // Display posts
         if (posts.length === 0) {
@@ -98,7 +104,7 @@ async function loadBlogPosts() {
         }
     } catch (error) {
         console.error('Error loading blog posts:', error);
-        blogContainer.innerHTML = '<p style="color: #789cb5;">Unable to load blog posts.</p>';
+        blogContainer.innerHTML = '<p style="color: #789cb5;">Unable to load blog posts. Check console for errors.</p>';
     }
 }
 
