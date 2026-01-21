@@ -1,0 +1,118 @@
+title: Welcome to My Blog
+date: 2026-01-20
+author: Ethan Cui
+
+Generating Synthetic Training Data for YOLOv11 with Three.js
+
+Training a high-quality object detection model usually means collecting and labeling thousands of images. That’s expensive, slow, and often impractical. A powerful alternative is synthetic data generation—rendering artificial images where annotations are known automatically.
+
+In this post, we’ll look at how Three.js can be used to generate synthetic datasets for training a YOLOv11-style object detection model.
+
+Why Synthetic Data?
+
+Synthetic data is especially useful when:
+
+Real-world data is scarce or hard to label
+
+You want precise ground-truth bounding boxes
+
+You need controlled variation (lighting, angles, occlusion)
+
+You want fast iteration and scalability
+
+With a 3D engine, you get labels “for free” because you already know where every object is.
+
+Why Three.js?
+
+Three.js is a WebGL-based 3D library that runs in the browser or Node.js. It’s a great choice because:
+
+Easy scene setup and camera control
+
+Fast rendering
+
+Works headlessly with tools like Puppeteer
+
+JavaScript-based, making automation straightforward
+
+High-Level Pipeline
+
+Create 3D assets
+
+Load or model objects (GLTF/OBJ)
+
+Apply random textures and materials
+
+Scene randomization
+
+Randomize object position, rotation, and scale
+
+Vary lighting conditions
+
+Add background planes or HDR environments
+
+Introduce occlusion between objects
+
+Render images
+
+Use a perspective camera
+
+Render RGB frames to disk
+
+Generate YOLO labels
+
+Project 3D bounding boxes into 2D screen space
+
+Convert pixel coordinates to YOLO format
+
+Train YOLOv11
+
+Use the synthetic dataset as primary or pretraining data
+
+Fine-tune on real images if available
+
+Computing YOLO Bounding Boxes
+
+For each object in the scene:
+
+Compute its 3D bounding box
+
+Project the box corners into screen space
+
+Find the 2D min/max extents
+
+Normalize values for YOLO format:
+
+class_id x_center y_center width height
+
+
+All values are normalized by image width and height.
+
+This step is deterministic and avoids manual annotation entirely.
+
+Example Use Cases
+
+Industrial defect detection
+
+Robotics and simulation environments
+
+Rare or dangerous scenarios
+
+Custom objects not found in public datasets
+
+Best Practices
+
+Randomize aggressively to avoid overfitting
+
+Mix synthetic and real data when possible
+
+Validate with real-world test images
+
+Simulate sensor noise and motion blur
+
+Start simple, then increase scene complexity
+
+Final Thoughts
+
+Using Three.js to generate synthetic data is a fast and flexible way to bootstrap object detection models like YOLOv11. While synthetic data isn’t a perfect replacement for real images, it can dramatically reduce labeling costs and improve model robustness—especially when combined with fine-tuning on real data.
+
+If you control the simulation, you control the data—and that’s a major advantage in modern computer vision workflows.
