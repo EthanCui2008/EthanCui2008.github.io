@@ -1,48 +1,457 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>OrcaShamu's Homepage</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ethan Cui | Personal Site</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f4f1;
+      --panel: #f0ede8;
+      --card: #f7f5f2;
+      --text: #1c1b19;
+      --muted: #7d7671;
+      --accent: #a35a4a;
+      --border: #e0dbd4;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background: var(--bg);
+      font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+      line-height: 1.75;
+      padding: 28px 24px 40px 18px;
+      overflow: hidden;
+    }
+
+    .page {
+      max-width: none;
+      margin: 0;
+      display: grid;
+      grid-template-columns: minmax(260px, 330px) minmax(0, 1fr);
+      gap: 28px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+    }
+
+    aside.sidebar {
+      align-self: start;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 0;
+      background: transparent;
+      border: none;
+    }
+
+    h1 {
+      margin: 4px 0 8px;
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: -0.4px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: -0.2px;
+    }
+
+    h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    p {
+      margin: 0 0 10px;
+      color: var(--text);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .role {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .reading {
+      font-family: "Source Serif 4", "IBM Plex Sans", serif;
+    }
+
+    .bio {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      object-fit: cover;
+    }
+
+    .bio-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      justify-content: flex-start;
+    }
+
+    .bio-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .bio-links img {
+      width: 14px;
+      height: 14px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      border-radius: 0;
+      border: none;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      background: transparent;
+    }
+
+    .btn.primary {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .quick-list {
+      display: grid;
+      gap: 10px;
+      padding: 0;
+      margin: 4px 0 0;
+      list-style: none;
+    }
+
+    .quick-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      font-size: 13px;
+      align-items: flex-start;
+    }
+
+    .quick-item span:first-child {
+      color: var(--muted);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .section-header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .section-link {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .row-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-radius: 0;
+      border-bottom: 1px solid var(--border);
+      background: transparent;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .row-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .row-meta {
+      display: inline-flex;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .text-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-height: 100%;
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--panel);
+    }
+
+    .main-inset {
+      position: relative;
+      min-height: 320px;
+      padding: 20px 22px;
+      z-index: 1;
+    }
+
+    .content::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(255, 120, 90, 0.15), rgba(255, 210, 90, 0.12), rgba(130, 210, 160, 0.14), rgba(120, 170, 255, 0.14), rgba(200, 140, 255, 0.12)),
+        radial-gradient(circle at 20% 20%, rgba(255, 110, 110, 0.12), transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(120, 200, 255, 0.12), transparent 50%);
+      background-size: 220% 220%;
+      animation: drift 24s linear infinite;
+      opacity: 0.7;
+    }
+
+    .content::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.035) 0, rgba(0, 0, 0, 0.035) 1px, transparent 1px, transparent 3px),
+        repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.03) 0, rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 4px);
+      mix-blend-mode: multiply;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    @keyframes drift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    @media (max-width: 960px) {
+      body {
+        padding: 32px 18px 24px 16px;
+      }
+      .page {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <link rel="stylesheet" href="styles.css">
-
-    <article>
-        <img src="svg-img/profile_picture.svg" alt="profile" class="top-left-image">
-        <h1>Ethan Cui </h1>
-
-        <div class="row">
-            <h2>aka</h2>
-            <h3>OrcaShamu</h3>
+  <div class="page">
+    <aside class="sidebar">
+      <div class="bio">
+        <div class="name-row">
+          <img class="avatar" src="svg-img/profile_picture.svg" alt="Profile">
+          <h1>Ethan Cui</h1>
         </div>
-        <p>Student Researcher and Software Engineer</p>
-        <p>I'm currently working on: Project_link</p>
-        <p><a href="blog.html" class="custom-link">Read my blog →</a></p>
+        <div class="role">Building ML-backed, web-first experiences.</div>
+        <p class="muted reading">
+          Full-stack developer who enjoys shipping polished products, exploring synthetic data workflows,
+          and writing about what I learn along the way.
+        </p>
+        <ul class="quick-list">
+          <li class="quick-item">
+            <span>Interests</span>
+            <span>Generative AI, 3D tooling, fast UIs</span>
+          </li>
+          <li class="quick-item">
+            <span>Location</span>
+            <span>Remote-friendly · EST</span>
+          </li>
+        </ul>
+      </div>
 
-        <div class="contact-buttons">
-            <a href="mailto:ethancuipro@gmail.com" class="image-button">
-                <img src="svg-img/email-icon.svg" alt="Icon 1" class="button-icon">
-            </a>
-            <a href="https://www.linkedin.com/in/ethan-cui-4643b2267/" class="image-button">
-                <img src="svg-img/linkedin-icon.svg" alt="Icon 2" class="button-icon-linked-in">
-            </a>
-            <a href="https://discord.com/users/818935243662557254" class="image-button">
-                <img src="svg-img/discord-icon.svg" alt="Icon 3" class="button-icon">
-            </a>
-            <a href="https://github.com/EthanCui2008/" class="image-button">
-                <img src="svg-img/github-icon.svg" alt="Icon 3" class="button-icon">
-            </a>
+      <div class="actions">
+        <a class="btn primary" href="resume.pdf" target="_blank" rel="noreferrer">Download Resume</a>
+      </div>
+
+      <section id="projects">
+        <div class="section-header">
+          <h2><span class="section-link">Projects</span></h2>
+          <span class="muted">All</span>
         </div>
-    </article>
+        <div class="list" id="projects-list">
+          <div class="muted reading">Loading projects…</div>
+        </div>
+      </section>
 
-    <canvas id="sineWaveCanvas"></canvas>
-    <script src="scripts.js"></script>
+      <section id="blog">
+        <div class="section-header">
+          <h2><span class="section-link">Blog</span></h2>
+          <span class="muted">All</span>
+        </div>
+        <div class="list" id="blogs-list">
+          <div class="muted reading">Loading posts…</div>
+        </div>
+      </section>
 
+      <div class="bio-links">
+        <span>Links</span>
+        <a href="https://github.com/EthanCui2008" target="_blank" rel="noreferrer">
+          <img src="svg-img/github-icon.svg" alt="GitHub">GitHub
+        </a>
+        <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" title="Update with your profile">
+          <img src="svg-img/linkedin-icon.svg" alt="LinkedIn">LinkedIn
+        </a>
+        <a href="mailto:you@example.com" title="Update this email">
+          <img src="svg-img/email-icon.svg" alt="Email">Email
+        </a>
+        <a href="#" title="Add your Discord invite/user">
+          <img src="svg-img/discord-icon.svg" alt="Discord">Discord
+        </a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="main-inset" aria-hidden="true"></section>
+    </main>
+  </div>
+  <script>
+    const projectsList = document.getElementById("projects-list");
+    const blogsList = document.getElementById("blogs-list");
+
+    fetch("projects.json")
+      .then((response) => response.json())
+      .then((projects) => {
+        projectsList.innerHTML = "";
+        projects.forEach((project) => {
+          const row = document.createElement("div");
+          row.className = "row-item";
+
+          const title = document.createElement("a");
+          title.className = "row-title";
+          if (project.link) {
+            title.href = project.link;
+          }
+          title.textContent = project.title;
+
+          const meta = document.createElement("span");
+          meta.className = "row-meta";
+          meta.textContent = `${project.status} · ${project.year}`;
+
+          row.append(title, meta);
+          projectsList.appendChild(row);
+        });
+      })
+      .catch(() => {
+        projectsList.innerHTML = "<div class=\"muted reading\">Unable to load projects.</div>";
+      });
+
+    fetch("blogs.json")
+      .then((response) => response.json())
+      .then((posts) => {
+        blogsList.innerHTML = "";
+        posts.forEach((post) => {
+          const row = document.createElement("div");
+          row.className = "row-item";
+
+          const title = document.createElement("a");
+          title.className = "row-title";
+          title.href = `blog-post.html?post=${encodeURIComponent(post.slug)}`;
+          title.textContent = post.title;
+
+          const meta = document.createElement("span");
+          meta.className = "row-meta";
+          meta.textContent = post.date;
+
+          row.append(title, meta);
+          blogsList.appendChild(row);
+        });
+      })
+      .catch(() => {
+        blogsList.innerHTML = "<div class=\"muted reading\">Unable to load posts.</div>";
+      });
+  </script>
 </body>
-
 </html>
