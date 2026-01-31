@@ -56,19 +56,44 @@ float noise(vec2 p) {
   return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
 }
 
+vec2 rotate(vec2 p, float a) {
+  float s = sin(a);
+  float c = cos(a);
+  return vec2(c * p.x - s * p.y, s * p.x + c * p.y);
+}
+
+float line(vec2 p, float width) {
+  return smoothstep(width, 0.0, abs(p.y));
+}
+
 void main() {
   vec2 st = vUv;
   vec2 aspect = vec2(uResolution.x / uResolution.y, 1.0);
   vec2 uv = (st - 0.5) * aspect;
-  float t = uTime * 0.12;
 
-  float n = noise(uv * 2.8 + t);
-  float waves = sin((uv.x + uv.y) * 5.0 + uTime * 0.6) * 0.2;
-  float glow = smoothstep(0.7, 0.0, length(uv));
+  vec2 r = rotate(uv, -0.6);
+  float t = uTime * 0.15;
+  float n = noise(uv * 2.6 + t * 0.3);
 
-  vec3 base = mix(vec3(0.07, 0.1, 0.16), vec3(0.92, 0.58, 0.28), n);
-  base += vec3(0.08, 0.2, 0.22) * waves;
-  base += vec3(0.12, 0.16, 0.2) * glow;
+  vec3 deepBlue = vec3(0.04, 0.17, 0.62);
+  vec3 midBlue = vec3(0.08, 0.28, 0.86);
+  vec3 ice = vec3(0.86, 0.86, 0.9);
+  vec3 red = vec3(0.78, 0.08, 0.16);
+
+  float band = smoothstep(-0.15, 0.15, r.y + 0.15);
+  vec3 sky = mix(deepBlue, midBlue, smoothstep(0.0, 1.0, st.y));
+  vec3 horizon = mix(ice, red, smoothstep(0.2, 0.9, -r.y));
+  vec3 base = mix(horizon, sky, band);
+
+  float trail = line(rotate(uv + vec2(0.12, -0.02), -0.6), 0.004);
+  trail += line(rotate(uv + vec2(0.125, -0.03), -0.6), 0.0025);
+  vec3 trailColor = mix(ice, vec3(0.98, 0.4, 0.7), 0.5 + 0.5 * sin(t * 2.0));
+  base = mix(base, trailColor, trail);
+
+  float jet = smoothstep(0.02, 0.0, length(rotate(uv + vec2(0.18, -0.02), -0.6)) - 0.02);
+  base = mix(base, vec3(0.05, 0.08, 0.12), jet);
+
+  base += (n - 0.5) * 0.08;
 
   gl_FragColor = vec4(base, 1.0);
 }
@@ -149,9 +174,8 @@ const renderTimeline = (items: TimelineItem[]): void => {
       (wrapper as HTMLAnchorElement).href = item.link;
     }
     wrapper.innerHTML = `
-      <span class="kind">${item.kind}</span>
       <span class="title">${item.title}</span>
-      <span class="meta">${item.meta}</span>
+      <span class="meta">${item.meta} · ${item.kind}</span>
     `;
     li.appendChild(wrapper);
     root.appendChild(li);

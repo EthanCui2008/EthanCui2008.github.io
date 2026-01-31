@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120" role="img" aria-label="Minimal world map">
+  <!-- Minimal, hand-drawn-ish land masses (not geographically exact). -->
+  <g fill="#354e53" fill-opacity="0.55">
+    <!-- North America -->
+    <path d="M35 45c6-9 18-14 30-13 10 1 18 6 22 13 3 6 2 12-2 18-6 10-21 14-36 11-14-3-22-14-14-29z"/>
+    <!-- South America -->
+    <path d="M68 70c7-2 13 3 14 10 1 8-4 18-10 23-6 4-10 1-10-6 0-10 2-23 6-27z"/>
+    <!-- Europe -->
+    <path d="M118 42c6-5 14-7 22-5 6 2 9 6 7 10-2 5-9 8-16 9-9 1-17-3-13-14z"/>
+    <!-- Africa -->
+    <path d="M128 56c8-6 18-5 25 1 7 7 8 18 3 28-6 11-19 16-29 11-10-6-10-27 1-40z"/>
+    <!-- Asia -->
+    <path d="M145 44c9-7 23-9 36-5 13 4 20 12 18 21-2 10-14 16-26 18-16 2-30-6-28-19 1-7 0-10 0-15z"/>
+    <!-- Australia -->
+    <path d="M178 82c6-4 15-4 21 1 5 5 4 10-2 14-7 5-18 5-23-1-4-5-2-10 4-14z"/>
+    <!-- Greenland / Arctic hint -->
+    <path d="M80 26c6-4 14-4 18 0 3 3 1 7-4 9-6 3-14 2-17-2-2-3-1-6 3-7z"/>
+  </g>
+</svg>
