@@ -10,127 +10,78 @@
   <body>
     <div class="layout">
       <aside class="sidebar">
-        <div class="profile-card">
-          <div class="profile-header">
-            <img class="profile-photo" src="svg-img/profile_picture.svg" alt="Profile placeholder" />
-            <div>
-              <p class="eyebrow">Personal Snapshot</p>
-              <h1>Ethan Cui</h1>
-              <p class="role">Creative Technologist</p>
+        <div class="sidebar-content">
+          <div class="profile-card">
+            <div class="profile-header">
+              <img class="profile-photo" src="svg-img/profile_picture.svg" alt="Profile placeholder" />
+              <div>
+                <p class="eyebrow">Personal Site</p>
+                <h1>Ethan Cui</h1>
+              </div>
             </div>
-          </div>
-          <div class="tag-row">
-            <span>3D + WebGL</span>
-            <span>Visual Systems</span>
-            <span>Rapid Prototyping</span>
-          </div>
-          <dl class="details">
-            <div>
-              <dt>Base</dt>
-              <dd>Seattle, WA</dd>
-            </div>
-            <div>
-              <dt>Focus</dt>
-              <dd>Shaders, data visualization, interactive UI</dd>
-            </div>
-            <div>
-              <dt>Currently</dt>
-              <dd>Building a real-time portfolio lab</dd>
-            </div>
-            <div>
-              <dt>Availability</dt>
-              <dd>Open for collabs</dd>
-            </div>
-          </dl>
-          <div class="socials">
-            <a href="mailto:hello@example.com" aria-label="Email">
-              <img src="svg-img/email-icon.svg" alt="Email" />
-            </a>
-            <a href="https://github.com/" aria-label="GitHub">
-              <img src="svg-img/github-icon.svg" alt="GitHub" />
-            </a>
-            <a href="https://linkedin.com/" aria-label="LinkedIn">
-              <img src="svg-img/linkedin-icon.svg" alt="LinkedIn" />
-            </a>
-            <a href="https://discord.com/" aria-label="Discord">
-              <img src="svg-img/discord-icon.svg" alt="Discord" />
-            </a>
-          </div>
+            <dl class="details">
+              <div>
+                <dt>Location</dt>
+                <dd>
+                  <div class="location-card">
+                    <div class="mini-map" role="img" aria-label="World map with PST highlighted">
+                      <img src="svg-img/world-map.svg" alt="" aria-hidden="true" />
+                      <span class="pst-glow" aria-hidden="true"></span>
+                      <span class="pst-dot" aria-hidden="true"></span>
+                    </div>
+                    <div class="location-meta">
+                      <strong>Mountain View, California</strong>
+                      <span>PST (UTC-08:00)</span>
+                    </div>
+                  </div>
+                </dd>
+              </div>
+              <div>
+                <dt>Pronouns</dt>
+                <dd>He/Him</dd>
+              </div>
+              <div>
+                <dt>Bio</dt>
+                <dd>Shaders, data visualization, interactive UI</dd>
+              </div>
+            </dl>
         </div>
-
-        <section class="bio-graph">
-          <div class="section-title">
-            <h2>Graphical Bio</h2>
-            <p>Signal strength across focus areas</p>
-          </div>
-          <div class="graph-shell">
-            <svg viewBox="0 0 220 220" role="img" aria-label="Graphical bio radar chart">
-              <defs>
-                <linearGradient id="bioGradient" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0%" stop-color="#1a7f6c" />
-                  <stop offset="100%" stop-color="#d86f3c" />
-                </linearGradient>
-              </defs>
-              <circle cx="110" cy="110" r="90" class="grid" />
-              <circle cx="110" cy="110" r="60" class="grid" />
-              <circle cx="110" cy="110" r="30" class="grid" />
-              <line x1="110" y1="20" x2="110" y2="200" class="grid" />
-              <line x1="20" y1="110" x2="200" y2="110" class="grid" />
-              <line x1="35" y1="35" x2="185" y2="185" class="grid" />
-              <line x1="185" y1="35" x2="35" y2="185" class="grid" />
-              <polygon class="bio-shape" points="110,32 176,74 170,148 104,188 54,146 58,82" />
-              <circle cx="110" cy="32" r="5" class="node" />
-              <circle cx="176" cy="74" r="5" class="node" />
-              <circle cx="170" cy="148" r="5" class="node" />
-              <circle cx="104" cy="188" r="5" class="node" />
-              <circle cx="54" cy="146" r="5" class="node" />
-              <circle cx="58" cy="82" r="5" class="node" />
-            </svg>
-          </div>
-          <div class="bio-legend">
-            <span>Shader Design</span>
-            <span>3D Pipelines</span>
-            <span>Research</span>
-            <span>UI Systems</span>
-            <span>Storytelling</span>
-            <span>Tooling</span>
-          </div>
-        </section>
 
         <section class="timeline">
           <div class="section-title">
             <h2>Recent Updates</h2>
-            <p>Blog + project activity feed</p>
           </div>
           <ul id="timeline" class="timeline-list"></ul>
         </section>
+        </div>
+
+        <div class="socials">
+          <a href="mailto:hello@example.com" aria-label="Email">
+            <img src="svg-img/email-icon.svg" alt="Email" />
+          </a>
+          <a href="https://github.com/" aria-label="GitHub">
+            <img src="svg-img/github-icon.svg" alt="GitHub" />
+          </a>
+          <a href="https://linkedin.com/" aria-label="LinkedIn">
+            <img src="svg-img/linkedin-icon.svg" alt="LinkedIn" />
+          </a>
+          <a href="https://discord.com/" aria-label="Discord">
+            <img src="svg-img/discord-icon.svg" alt="Discord" />
+          </a>
+        </div>
       </aside>
 
       <main class="main">
         <section class="hero">
-          <div class="hero-text">
-            <p class="eyebrow">Shadered 3D Canvas</p>
-            <h2>Realtime Visual Playground</h2>
-            <p class="lead">
-              A compact WebGL shader study designed for a personal site hero. The graphic is driven
-              by a lightweight fragment shader and stays responsive for smooth scrolling.
-            </p>
-            <div class="hero-meta">
-              <div>
-                <strong>Core Stack</strong>
-                <span>Three.js, GLSL, TypeScript</span>
-              </div>
-              <div>
-                <strong>Focus</strong>
-                <span>Color gradients, noise fields, calm motion</span>
-              </div>
-            </div>
-          </div>
           <div class="canvas-wrap">
             <canvas id="shader-canvas" aria-label="Shader canvas"></canvas>
-            <div class="canvas-overlay">
-              <span>live shader</span>
-              <span>FPS tuned</span>
+            <div class="canvas-text">
+              <p class="eyebrow">Shadered 3D Canvas</p>
+              <h2>Realtime Visual Playground</h2>
+              <p class="lead">
+                Drop any short description here. The shader fills the entire frame while text
+                floats on top.
+              </p>
             </div>
           </div>
         </section>
