@@ -4,13 +4,15 @@
     "date": "Jan 20, 2026",
     "slug": "welcome",
     "substack": "https://substack.com",
-    "medium": "https://medium.com"
+    "medium": "https://medium.com",
+    "palette": ["#DB4F79", "#529DCC", "#000000", "#F7DB96"]
   },
   {
     "title": "Next up: fast-build notes",
     "date": "Draft",
     "slug": "next-up",
     "substack": "https://substack.com",
-    "medium": "https://medium.com"
+    "medium": "https://medium.com",
+    "palette": ["#AA001E", "#E65F00", "#FFDD00", "#E2E5E8"]
   }
 ]

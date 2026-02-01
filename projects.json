@@ -4,18 +4,23 @@
     "status": "Live",
     "year": "2026",
     "summary": "Landing site for a student-led build crew with fast navigation and clear CTAs.",
-    "link": "/SiliconSparks/"
+    "link": "/SiliconSparks/",
+    "palette": ["#62B3C9", "#40588C", "#E2E5E8"]
   },
   {
     "title": "YOLOv11 Synthetic Data Toolkit",
     "status": "In progress",
     "year": "2026",
-    "summary": "Three.js pipeline for randomized renders and YOLO-ready annotation export."
+    "summary": "Three.js pipeline for randomized renders and YOLO-ready annotation export.",
+    "link": "https://example.com/yolo-toolkit",
+    "palette": ["#E65F00", "#FFDD00", "#529DCC"]
   },
   {
     "title": "Realtime Portfolio UI",
     "status": "Studio",
     "year": "2025 →",
-    "summary": "Personal OS-inspired layout with a quiet editorial rhythm."
+    "summary": "Personal OS-inspired layout with a quiet editorial rhythm.",
+    "link": "https://example.com/realtime-ui",
+    "palette": ["#3C140A", "#A00000", "#F59632"]
   }
 ]

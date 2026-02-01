@@ -1,79 +1,45 @@
-import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
-
 const TIMELINE_LIMIT = 7;
+const MASTER_PALETTE = [
+  "#F7DB96",
+  "#DB4F79",
+  "#529DCC",
+  "#000000",
+  "#282828",
+  "#AA001E",
+  "#E65F00",
+  "#FFDD00",
+  "#E2E5E8",
+  "#62B3C9",
+  "#40588C",
+  "#3C140A",
+  "#78140F",
+  "#A00000",
+  "#D23C28",
+  "#F59632",
+  "#F6D4A1",
+  "#B4C0CA",
+  "#8C9196",
+  "#32373C",
+];
 
-const VERTEX_SHADER = `
-varying vec2 vUv;
+const normalizeLabel = (value, fallback = "TBD") => {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+  const trimmed = value.trim();
+  return trimmed.length ? trimmed : fallback;
+};
 
-void main() {
-  vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`;
+const formatKind = (value) => value.charAt(0).toUpperCase() + value.slice(1);
 
-const FRAGMENT_SHADER = `
-precision highp float;
-uniform float uTime;
-uniform vec2 uResolution;
-varying vec2 vUv;
+const blogState = (dateLabel) => (dateLabel.toLowerCase() === "draft" ? "Draft" : "Published");
 
-float hash(vec2 p) {
-  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-}
+const projectState = (statusLabel) => normalizeLabel(statusLabel, "Active");
 
-float noise(vec2 p) {
-  vec2 i = floor(p);
-  vec2 f = fract(p);
-  float a = hash(i);
-  float b = hash(i + vec2(1.0, 0.0));
-  float c = hash(i + vec2(0.0, 1.0));
-  float d = hash(i + vec2(1.0, 1.0));
-  vec2 u = f * f * (3.0 - 2.0 * f);
-  return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-}
-
-vec2 rotate(vec2 p, float a) {
-  float s = sin(a);
-  float c = cos(a);
-  return vec2(c * p.x - s * p.y, s * p.x + c * p.y);
-}
-
-float line(vec2 p, float width) {
-  return smoothstep(width, 0.0, abs(p.y));
-}
-
-void main() {
-  vec2 st = vUv;
-  vec2 aspect = vec2(uResolution.x / uResolution.y, 1.0);
-  vec2 uv = (st - 0.5) * aspect;
-
-  vec2 r = rotate(uv, -0.6);
-  float t = uTime * 0.15;
-  float n = noise(uv * 2.6 + t * 0.3);
-
-  vec3 deepBlue = vec3(0.04, 0.17, 0.62);
-  vec3 midBlue = vec3(0.08, 0.28, 0.86);
-  vec3 ice = vec3(0.86, 0.86, 0.9);
-  vec3 red = vec3(0.78, 0.08, 0.16);
-
-  float band = smoothstep(-0.15, 0.15, r.y + 0.15);
-  vec3 sky = mix(deepBlue, midBlue, smoothstep(0.0, 1.0, st.y));
-  vec3 horizon = mix(ice, red, smoothstep(0.2, 0.9, -r.y));
-  vec3 base = mix(horizon, sky, band);
-
-  float trail = line(rotate(uv + vec2(0.12, -0.02), -0.6), 0.004);
-  trail += line(rotate(uv + vec2(0.125, -0.03), -0.6), 0.0025);
-  vec3 trailColor = mix(ice, vec3(0.98, 0.4, 0.7), 0.5 + 0.5 * sin(t * 2.0));
-  base = mix(base, trailColor, trail);
-
-  float jet = smoothstep(0.02, 0.0, length(rotate(uv + vec2(0.18, -0.02), -0.6)) - 0.02);
-  base = mix(base, vec3(0.05, 0.08, 0.12), jet);
-
-  base += (n - 0.5) * 0.08;
-
-  gl_FragColor = vec4(base, 1.0);
-}
-`;
+const normalizeBlogDate = (value) => {
+  const label = normalizeLabel(value, "TBD");
+  return label.toLowerCase() === "draft" ? "TBD" : label;
+};
 
 const parseDate = (value) => {
   const parsed = Date.parse(value);
@@ -105,19 +71,127 @@ const fetchJson = async (url) => {
   }
 };
 
+const hexToRgb = (hex) => {
+  const normalized = hex.replace("#", "");
+  const bigint = parseInt(normalized, 16);
+  if (normalized.length === 3) {
+    const r = (bigint >> 8) & 0xf;
+    const g = (bigint >> 4) & 0xf;
+    const b = bigint & 0xf;
+    return [r * 17, g * 17, b * 17];
+  }
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return [r, g, b];
+};
+
+const rgbToHex = (r, g, b) =>
+  `#${[r, g, b]
+    .map((v) => {
+      const clamped = Math.max(0, Math.min(255, Math.round(v)));
+      return clamped.toString(16).padStart(2, "0");
+    })
+    .join("")}`;
+
+const lerpColor = (a, b, t) => {
+  const [ar, ag, ab] = hexToRgb(a);
+  const [br, bg, bb] = hexToRgb(b);
+  return rgbToHex(ar + (br - ar) * t, ag + (bg - ag) * t, ab + (bb - ab) * t);
+};
+
+const sampleGradient = (colors, t) => {
+  if (!colors.length) return "#000000";
+  if (colors.length === 1) return colors[0];
+  const clamped = Math.max(0, Math.min(1, t));
+  const scaled = clamped * (colors.length - 1);
+  const idx = Math.floor(scaled);
+  const localT = scaled - idx;
+  const nextIdx = Math.min(idx + 1, colors.length - 1);
+  return lerpColor(colors[idx], colors[nextIdx], localT);
+};
+
+const hashToUnit = (input) => {
+  let hash = 0;
+  for (let i = 0; i < input.length; i += 1) {
+    hash = (hash * 31 + input.charCodeAt(i)) >>> 0;
+  }
+  return (hash % 1000) / 1000;
+};
+
+const windowedSegments = (palette, start, span, segments = 12) => {
+  const source = palette && palette.length ? palette : MASTER_PALETTE;
+  const clampedSpan = Math.max(0.1, Math.min(1, span));
+  const maxStart = 1 - clampedSpan;
+  const normalizedStart = Math.max(0, Math.min(maxStart, start));
+  const colors = [];
+  for (let i = 0; i < segments; i += 1) {
+    const t = segments === 1 ? normalizedStart : normalizedStart + (clampedSpan * i) / (segments - 1);
+    colors.push(sampleGradient(source, t));
+  }
+  return colors;
+};
+
+const updatePaletteBar = (pathname, blogs, projects) => {
+  const bar = document.querySelector("#sidebar-palette");
+  if (!bar) return;
+
+  const slugMatch = pathname.match(/\/blog\/(.+)\.html/);
+  const slug = slugMatch ? slugMatch[1] : undefined;
+
+  let palette = MASTER_PALETTE;
+  let start = 0;
+  let span = 1;
+
+  if (slug) {
+    const blog = blogs.find((item) => item.slug === slug);
+    palette = blog?.palette?.length ? blog.palette : MASTER_PALETTE;
+    start = hashToUnit(slug) * 0.5;
+    span = 0.32;
+  } else if (pathname.startsWith("/blog")) {
+    palette = MASTER_PALETTE;
+    start = 0.08;
+    span = 0.8;
+  } else if (pathname.startsWith("/projects")) {
+    const key = (projects && projects[0]?.title) || "projects";
+    palette = projects && projects[0]?.palette?.length ? projects[0].palette : MASTER_PALETTE;
+    start = hashToUnit(key) * 0.5;
+    span = 0.42;
+  } else {
+    palette = MASTER_PALETTE;
+    start = 0;
+    span = 1;
+  }
+
+  const colors = windowedSegments(palette, start, span, 12);
+  for (let i = bar.children.length; i < colors.length; i += 1) {
+    const cell = document.createElement("div");
+    cell.className = "palette-cell";
+    bar.appendChild(cell);
+  }
+  colors.forEach((color, index) => {
+    const cell = bar.children[index];
+    if (cell) {
+      cell.style.backgroundColor = color;
+    }
+  });
+};
+
 const buildTimeline = (blogs, projects) => {
   const blogItems = blogs.map((item) => ({
     kind: "blog",
     title: item.title,
-    meta: item.date || "Draft",
-    link: item.slug ? `blog/${item.slug}.html` : item.substack || item.medium,
+    date: normalizeBlogDate(item.date),
+    state: blogState(normalizeLabel(item.date, "TBD")),
+    link: item.slug ? `/blog/${item.slug}.html` : item.substack || item.medium,
     sortKey: parseDate(item.date),
   }));
 
   const projectItems = projects.map((item) => ({
     kind: "project",
     title: item.title,
-    meta: `${item.status} - ${item.year}`,
+    date: normalizeLabel(item.year, "TBD"),
+    state: projectState(item.status),
     link: item.link,
     sortKey: parseYear(item.year),
   }));
@@ -149,64 +223,179 @@ const renderTimeline = (items) => {
     if (item.link && wrapper instanceof HTMLAnchorElement) {
       wrapper.href = item.link;
     }
+    const kindLabel = formatKind(item.kind);
     wrapper.innerHTML = `
       <span class="title">${item.title}</span>
-      <span class="meta">${item.meta} · ${item.kind}</span>
+      <span class="meta">${item.date} · ${item.state} · ${kindLabel}</span>
     `;
     li.appendChild(wrapper);
     root.appendChild(li);
   });
 };
 
-const initTimeline = async () => {
-  const [blogs, projects] = await Promise.all([fetchJson("blogs.json"), fetchJson("projects.json")]);
-  const timeline = buildTimeline(blogs, projects);
-  renderTimeline(timeline);
-};
-
-const initShader = () => {
-  const canvas = document.querySelector("#shader-canvas");
-  if (!canvas) {
+const renderBlogList = (blogs) => {
+  const root = document.querySelector("#blog-list");
+  if (!root) {
     return;
   }
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  root.innerHTML = "";
+  if (!blogs.length) {
+    const empty = document.createElement("div");
+    empty.className = "page-card";
+    empty.textContent = "No blog posts yet.";
+    root.appendChild(empty);
+    return;
+  }
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-  const geometry = new THREE.PlaneGeometry(2, 2);
-  const uniforms = {
-    uTime: { value: 0 },
-    uResolution: { value: new THREE.Vector2(1, 1) },
-  };
-  const material = new THREE.ShaderMaterial({
-    uniforms,
-    vertexShader: VERTEX_SHADER,
-    fragmentShader: FRAGMENT_SHADER,
+  blogs.forEach((item) => {
+    const rawDate = normalizeLabel(item.date, "TBD");
+    const dateLabel = normalizeBlogDate(rawDate);
+    const stateLabel = blogState(rawDate);
+    const kindLabel = "Blog";
+    const card = document.createElement("article");
+    card.className = "page-card";
+    const link = item.slug ? `/blog/${item.slug}.html` : item.substack || item.medium;
+    const titleMarkup = link
+      ? `<a class="page-title-link" href="${link}">${item.title}</a>`
+      : `<span class="page-title-link is-muted">${item.title}</span>`;
+    const externalLinks = [
+      item.substack ? `<a class="page-link" href="${item.substack}" target="_blank" rel="noopener noreferrer">Substack</a>` : "",
+      item.medium ? `<a class="page-link" href="${item.medium}" target="_blank" rel="noopener noreferrer">Medium</a>` : "",
+    ].filter(Boolean).join("");
+    const linksMarkup = externalLinks ? `<div class="blog-links">${externalLinks}</div>` : "";
+    card.innerHTML = `
+      <div class="page-card-header">
+        <h3>${titleMarkup}</h3>
+        <span class="page-meta">${dateLabel} · ${stateLabel} · ${kindLabel}</span>
+      </div>
+      ${linksMarkup}
+    `;
+    root.appendChild(card);
   });
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
-
-  const resize = () => {
-    const parent = canvas.parentElement;
-    const width = parent ? parent.clientWidth : canvas.clientWidth;
-    const height = parent ? parent.clientHeight : canvas.clientHeight;
-    renderer.setSize(width, height, false);
-    uniforms.uResolution.value.set(width, height);
-  };
-
-  resize();
-  window.addEventListener("resize", resize);
-
-  const clock = new THREE.Clock();
-  const animate = () => {
-    uniforms.uTime.value = clock.getElapsedTime();
-    renderer.render(scene, camera);
-    requestAnimationFrame(animate);
-  };
-  animate();
 };
 
-initTimeline();
-initShader();
+const renderProjectList = (projects) => {
+  const root = document.querySelector("#project-list");
+  if (!root) {
+    return;
+  }
+
+  root.innerHTML = "";
+  if (!projects.length) {
+    const empty = document.createElement("div");
+    empty.className = "page-card";
+    empty.textContent = "No projects yet.";
+    root.appendChild(empty);
+    return;
+  }
+
+  projects.forEach((item) => {
+    const dateLabel = normalizeLabel(item.year, "TBD");
+    const stateLabel = projectState(item.status);
+    const kindLabel = "Project";
+    const card = document.createElement("article");
+    card.className = "page-card";
+    const link = item.link || "#";
+    if (item.link) {
+      card.classList.add("is-clickable");
+      card.tabIndex = 0;
+      const navigate = () => {
+        window.location.href = link;
+      };
+      card.addEventListener("click", navigate);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          navigate();
+        }
+      });
+    }
+    const linkMarkup =
+      item.link
+        ? `<a class="page-link" href="${link}">View project</a>`
+        : `<span class="page-link is-muted">Link coming soon</span>`;
+    card.innerHTML = `
+      <div class="page-card-header">
+        <h3>${item.title}</h3>
+        <span class="page-meta">${dateLabel} · ${stateLabel} · ${kindLabel}</span>
+      </div>
+      <p class="page-summary">${item.summary || ""}</p>
+      ${linkMarkup}
+    `;
+    root.appendChild(card);
+  });
+};
+
+const initData = async () => {
+  const [blogs, projects] = await Promise.all([fetchJson("/blogs.json"), fetchJson("/projects.json")]);
+  const timeline = buildTimeline(blogs, projects);
+  renderTimeline(timeline);
+  renderBlogList(blogs);
+  renderProjectList(projects);
+  return { blogs, projects };
+};
+
+const setActiveNav = (section) => {
+  document.querySelectorAll(".page-nav-btn").forEach((btn) => {
+    const btnSection = btn.dataset.section;
+    if (!btnSection) return;
+    btn.classList.toggle("is-active", btnSection === section);
+  });
+};
+
+const sectionFromPath = (pathname) => {
+  if (pathname.startsWith("/blog")) return "blog";
+  if (pathname.startsWith("/projects")) return "projects";
+  return "home";
+};
+
+const swapMain = async (url, push = true) => {
+  try {
+    const res = await fetch(url, { headers: { "X-Requested-With": "spa" } });
+    if (!res.ok) throw new Error(`Failed to load ${url}`);
+    const text = await res.text();
+    const doc = new DOMParser().parseFromString(text, "text/html");
+    const newMain = doc.querySelector("main");
+    const currentMain = document.querySelector("main");
+    if (!newMain || !currentMain) throw new Error("Main container missing");
+    currentMain.replaceWith(newMain);
+    const pathname = new URL(url, window.location.origin).pathname;
+    setActiveNav(sectionFromPath(pathname));
+    document.title = doc.title || document.title;
+    window.scrollTo(0, 0);
+    const { blogs, projects } = await initData();
+    updatePaletteBar(pathname, blogs, projects);
+    if (push) {
+      history.pushState({ url }, "", url);
+    }
+  } catch (error) {
+    console.warn(error);
+    window.location.href = url;
+  }
+};
+
+const setupSpaNav = () => {
+  const navLinks = document.querySelectorAll(".page-nav-btn");
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+        return;
+      }
+      event.preventDefault();
+      const href = link.getAttribute("href");
+      if (!href) return;
+      swapMain(href, true);
+    });
+  });
+
+  window.addEventListener("popstate", (event) => {
+    const targetUrl = event.state?.url || window.location.href;
+    swapMain(targetUrl, false);
+  });
+
+  setActiveNav(sectionFromPath(window.location.pathname));
+};
+
+setupSpaNav();
+initData().then(({ blogs, projects }) => updatePaletteBar(window.location.pathname, blogs, projects));

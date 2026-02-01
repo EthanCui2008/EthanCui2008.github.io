@@ -17,18 +17,14 @@
               <div>
                 <p class="eyebrow">Personal Site</p>
                 <h1>Ethan Cui</h1>
+                <p class="pronouns">He/Him</p>
               </div>
             </div>
             <dl class="details">
-              <div>
-                <dt>Location</dt>
+              <div class="location-block">
+                <dt class="sr-only">Location</dt>
                 <dd>
                   <div class="location-card">
-                    <div class="mini-map" role="img" aria-label="World map with PST highlighted">
-                      <img src="svg-img/world-map.svg" alt="" aria-hidden="true" />
-                      <span class="pst-glow" aria-hidden="true"></span>
-                      <span class="pst-dot" aria-hidden="true"></span>
-                    </div>
                     <div class="location-meta">
                       <strong>Mountain View, California</strong>
                       <span>PST (UTC-08:00)</span>
@@ -37,14 +33,14 @@
                 </dd>
               </div>
               <div>
-                <dt>Pronouns</dt>
-                <dd>He/Him</dd>
-              </div>
-              <div>
-                <dt>Bio</dt>
-                <dd>Shaders, data visualization, interactive UI</dd>
+                <dd>Shaders, data visualization, interactive UI. Building real-time WebGL studies, tactile UI systems, and clean data stories with a focus on motion, light, and clarity.</dd>
               </div>
             </dl>
+            <nav class="page-nav" aria-label="Site">
+              <a class="page-nav-btn is-active" data-section="home" href="/index.html">Home</a>
+              <a class="page-nav-btn" data-section="blog" href="/blog/index.html">Blog</a>
+              <a class="page-nav-btn" data-section="projects" href="/projects/index.html">Projects</a>
+            </nav>
         </div>
 
         <section class="timeline">
@@ -69,23 +65,12 @@
             <img src="svg-img/discord-icon.svg" alt="Discord" />
           </a>
         </div>
+        <div class="palette-sidebar">
+          <div id="sidebar-palette" class="palette-bar-grid"></div>
+        </div>
       </aside>
 
-      <main class="main">
-        <section class="hero">
-          <div class="canvas-wrap">
-            <canvas id="shader-canvas" aria-label="Shader canvas"></canvas>
-            <div class="canvas-text">
-              <p class="eyebrow">Shadered 3D Canvas</p>
-              <h2>Realtime Visual Playground</h2>
-              <p class="lead">
-                Drop any short description here. The shader fills the entire frame while text
-                floats on top.
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
+      <main class="main"></main>
     </div>
 
     <script type="module" src="main.js"></script>
