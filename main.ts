@@ -26,30 +26,13 @@ type TimelineItem = {
 };
 
 const TIMELINE_LIMIT = 7;
-const MASTER_PALETTE = [
-  // Row 1
-  "#F7DB96",
-  "#DB4F79",
-  "#529DCC",
-  "#000000",
-  // Row 2
-  "#282828",
+const MASTER_PALETTE = ["#282828",
   "#AA001E",
   "#E65F00",
   "#FFDD00",
   "#E2E5E8",
   "#62B3C9",
-  "#40588C",
-  // Row 3
-  "#3C140A",
-  "#78140F",
-  "#A00000",
-  "#D23C28",
-  "#F59632",
-  "#F6D4A1",
-  "#B4C0CA",
-  "#8C9196",
-  "#32373C",
+  "#40588C"
 ];
 
 const normalizeLabel = (value: string | undefined, fallback = "TBD"): string => {

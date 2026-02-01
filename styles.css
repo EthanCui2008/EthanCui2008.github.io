@@ -21,7 +21,6 @@ body {
   margin: 0;
   color: var(--ink);
   font-family: "Segoe UI", "Segoe UI Variable", Calibri, "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-  background: radial-gradient(circle at 20% 20%, #ffffff 0%, #f4f4f4 55%, #ececec 100%);
 }
 
 body::before {

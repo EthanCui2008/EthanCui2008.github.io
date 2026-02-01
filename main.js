@@ -1,9 +1,5 @@
 const TIMELINE_LIMIT = 7;
 const MASTER_PALETTE = [
-  "#F7DB96",
-  "#DB4F79",
-  "#529DCC",
-  "#000000",
   "#282828",
   "#AA001E",
   "#E65F00",
@@ -11,6 +7,10 @@ const MASTER_PALETTE = [
   "#E2E5E8",
   "#62B3C9",
   "#40588C",
+  "#F7DB96",
+  "#DB4F79",
+  "#529DCC",
+  "#000000",
   "#3C140A",
   "#78140F",
   "#A00000",
