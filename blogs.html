@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Personal Profile | Shader Notes</title>
+  <title>Blog | Shader Notes</title>
   <link rel="icon" href="favicon.ico" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -40,8 +40,8 @@
             </div>
           </dl>
           <nav class="page-nav" aria-label="Site">
-            <a class="page-nav-btn is-active" data-section="home" href="/index.html">Home</a>
-            <a class="page-nav-btn" data-section="blog" href="/blogs.html">Blog</a>
+            <a class="page-nav-btn" data-section="home" href="/index.html">Home</a>
+            <a class="page-nav-btn is-active" data-section="blog" href="/blogs.html">Blog</a>
             <a class="page-nav-btn" data-section="projects" href="/projects.html">Projects</a>
           </nav>
         </div>
@@ -73,7 +73,14 @@
       </div>
     </aside>
 
-    <main class="main"></main>
+    <main class="main">
+      <div class="page page-blog">
+        <div class="page-header">
+          <h2>Blog</h2>
+        </div>
+        <div id="blog-list" class="page-grid"></div>
+      </div>
+    </main>
   </div>
 
   <script type="module" src="main.js"></script>

@@ -1,4 +1,7 @@
 const TIMELINE_LIMIT = 7;
+let cachedBlogs = [];
+let cachedProjects = [];
+
 const MASTER_PALETTE = [
   "#282828",
   "#AA001E",
@@ -7,19 +10,6 @@ const MASTER_PALETTE = [
   "#E2E5E8",
   "#62B3C9",
   "#40588C",
-  "#F7DB96",
-  "#DB4F79",
-  "#529DCC",
-  "#000000",
-  "#3C140A",
-  "#78140F",
-  "#A00000",
-  "#D23C28",
-  "#F59632",
-  "#F6D4A1",
-  "#B4C0CA",
-  "#8C9196",
-  "#32373C",
 ];
 
 const normalizeLabel = (value, fallback = "TBD") => {
@@ -119,7 +109,7 @@ const hashToUnit = (input) => {
   return (hash % 1000) / 1000;
 };
 
-const windowedSegments = (palette, start, span, segments = 12) => {
+const windowedSegments = (palette, start, span, segments = 7) => {
   const source = palette && palette.length ? palette : MASTER_PALETTE;
   const clampedSpan = Math.max(0.1, Math.min(1, span));
   const maxStart = 1 - clampedSpan;
@@ -163,7 +153,7 @@ const updatePaletteBar = (pathname, blogs, projects) => {
     span = 1;
   }
 
-  const colors = windowedSegments(palette, start, span, 12);
+  const colors = windowedSegments(palette, start, span, 7);
   for (let i = bar.children.length; i < colors.length; i += 1) {
     const cell = document.createElement("div");
     cell.className = "palette-cell";
@@ -183,7 +173,7 @@ const buildTimeline = (blogs, projects) => {
     title: item.title,
     date: normalizeBlogDate(item.date),
     state: blogState(normalizeLabel(item.date, "TBD")),
-    link: item.slug ? `/blog/${item.slug}.html` : item.substack || item.medium,
+    slug: item.slug,
     sortKey: parseDate(item.date),
   }));
 
@@ -192,7 +182,7 @@ const buildTimeline = (blogs, projects) => {
     title: item.title,
     date: normalizeLabel(item.year, "TBD"),
     state: projectState(item.status),
-    link: item.link,
+    slug: item.slug,
     sortKey: parseYear(item.year),
   }));
 
@@ -219,18 +209,144 @@ const renderTimeline = (items) => {
   items.forEach((item) => {
     const li = document.createElement("li");
     li.className = "timeline-item";
-    const wrapper = item.link ? document.createElement("a") : document.createElement("div");
-    if (item.link && wrapper instanceof HTMLAnchorElement) {
-      wrapper.href = item.link;
-    }
+    const wrapper = document.createElement("div");
+    wrapper.className = "timeline-link";
+    wrapper.tabIndex = 0;
     const kindLabel = formatKind(item.kind);
     wrapper.innerHTML = `
       <span class="title">${item.title}</span>
       <span class="meta">${item.date} · ${item.state} · ${kindLabel}</span>
     `;
+
+    const openDetail = () => {
+      if (item.kind === "blog") {
+        showBlogDetail(item.slug);
+      } else if (item.kind === "project") {
+        showProjectDetail(item.slug);
+      }
+    };
+
+    wrapper.addEventListener("click", openDetail);
+    wrapper.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openDetail();
+      }
+    });
+
     li.appendChild(wrapper);
     root.appendChild(li);
   });
+};
+
+const formatStatus = (status) => {
+  if (!status) return "Active";
+  const map = {
+    "published": "Published",
+    "draft": "Draft",
+    "in-progress": "In Progress",
+    "completed": "Completed",
+    "archived": "Archived",
+  };
+  return map[status.toLowerCase()] || status.charAt(0).toUpperCase() + status.slice(1);
+};
+
+const renderTags = (tags) => {
+  if (!tags || !tags.length) return "";
+  const tagMarkup = tags.map((tag) => `<span class="tag">${tag}</span>`).join("");
+  return `<div class="tags">${tagMarkup}</div>`;
+};
+
+const simpleMarkdown = (text) => {
+  if (!text) return "";
+  return text
+    .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^- \[ \] (.+)$/gm, '<li class="task-item"><input type="checkbox" disabled> $1</li>')
+    .replace(/^- \[x\] (.+)$/gm, '<li class="task-item"><input type="checkbox" checked disabled> $1</li>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li.*<\/li>\n?)+/g, '<ul>$&</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(?!<[hup]|<li|<ul)(.+)$/gm, '<p>$1</p>')
+    .replace(/<p><\/p>/g, '');
+};
+
+const showBlogDetail = (slug) => {
+  const blog = cachedBlogs.find((b) => b.slug === slug);
+  if (!blog) return;
+
+  const main = document.querySelector("main");
+  if (!main) return;
+
+  const dateLabel = normalizeBlogDate(blog.date);
+  const stateLabel = blog.status ? formatStatus(blog.status) : blogState(blog.date);
+  const tagsMarkup = renderTags(blog.tags);
+  const contentHtml = simpleMarkdown(blog.content);
+
+  const externalButtons = [
+    blog.substack ? `<a class="external-btn" href="${blog.substack}" target="_blank" rel="noopener noreferrer">Substack</a>` : "",
+    blog.medium ? `<a class="external-btn" href="${blog.medium}" target="_blank" rel="noopener noreferrer">Medium</a>` : "",
+  ].filter(Boolean).join("");
+
+  main.innerHTML = `
+    <div class="page page-blog-post">
+      <button class="back-btn" data-back="blog">&larr; Back to Blog</button>
+      <h1 class="blog-post-title">${blog.title}</h1>
+      <span class="blog-post-meta">${dateLabel} · ${stateLabel}</span>
+      ${tagsMarkup}
+      ${externalButtons ? `<div class="external-buttons">${externalButtons}</div>` : ""}
+      <div class="page-body">${contentHtml}</div>
+    </div>
+  `;
+
+  main.querySelector(".back-btn").addEventListener("click", () => {
+    swapMain("/blogs.html", true);
+  });
+
+  history.pushState({ type: "blog", slug }, "", `/blog/${slug}`);
+  window.scrollTo(0, 0);
+  updatePaletteBar(`/blog/${slug}`, cachedBlogs, cachedProjects);
+};
+
+const showProjectDetail = (slug) => {
+  const project = cachedProjects.find((p) => p.slug === slug);
+  if (!project) return;
+
+  const main = document.querySelector("main");
+  if (!main) return;
+
+  const dateLabel = normalizeLabel(project.year, "TBD");
+  const stateLabel = formatStatus(project.status);
+  const tagsMarkup = renderTags(project.tags);
+  const contentHtml = simpleMarkdown(project.content);
+
+  const githubButton = project.link
+    ? `<a class="external-btn" href="${project.link}" target="_blank" rel="noopener noreferrer">GitHub</a>`
+    : "";
+
+  main.innerHTML = `
+    <div class="page page-project-detail">
+      <div class="detail-header-row">
+        <button class="back-btn" data-back="projects">&larr; Back to Projects</button>
+        ${githubButton ? `<div class="external-buttons">${githubButton}</div>` : ""}
+      </div>
+      <h1 class="project-detail-title">${project.title}</h1>
+      <span class="project-detail-meta">${dateLabel} · ${stateLabel}</span>
+      ${tagsMarkup}
+      <div class="page-body">${contentHtml}</div>
+    </div>
+  `;
+
+  main.querySelector(".back-btn").addEventListener("click", () => {
+    swapMain("/projects.html", true);
+  });
+
+  history.pushState({ type: "project", slug }, "", `/project/${slug}`);
+  window.scrollTo(0, 0);
+  updatePaletteBar(`/projects/${slug}`, cachedBlogs, cachedProjects);
 };
 
 const renderBlogList = (blogs) => {
@@ -251,26 +367,43 @@ const renderBlogList = (blogs) => {
   blogs.forEach((item) => {
     const rawDate = normalizeLabel(item.date, "TBD");
     const dateLabel = normalizeBlogDate(rawDate);
-    const stateLabel = blogState(rawDate);
+    const stateLabel = item.status ? formatStatus(item.status) : blogState(rawDate);
     const kindLabel = "Blog";
     const card = document.createElement("article");
-    card.className = "page-card";
-    const link = item.slug ? `/blog/${item.slug}.html` : item.substack || item.medium;
-    const titleMarkup = link
-      ? `<a class="page-title-link" href="${link}">${item.title}</a>`
-      : `<span class="page-title-link is-muted">${item.title}</span>`;
-    const externalLinks = [
-      item.substack ? `<a class="page-link" href="${item.substack}" target="_blank" rel="noopener noreferrer">Substack</a>` : "",
-      item.medium ? `<a class="page-link" href="${item.medium}" target="_blank" rel="noopener noreferrer">Medium</a>` : "",
+    card.className = "page-card is-clickable";
+    card.tabIndex = 0;
+
+    const externalButtons = [
+      item.substack ? `<a class="external-btn external-btn-small" href="${item.substack}" target="_blank" rel="noopener noreferrer">Substack</a>` : "",
+      item.medium ? `<a class="external-btn external-btn-small" href="${item.medium}" target="_blank" rel="noopener noreferrer">Medium</a>` : "",
     ].filter(Boolean).join("");
-    const linksMarkup = externalLinks ? `<div class="blog-links">${externalLinks}</div>` : "";
+    const buttonsMarkup = externalButtons ? `<div class="external-buttons">${externalButtons}</div>` : "";
+    const tagsMarkup = renderTags(item.tags);
+    const summaryMarkup = item.summary ? `<p class="page-summary">${item.summary}</p>` : "";
+
     card.innerHTML = `
       <div class="page-card-header">
-        <h3>${titleMarkup}</h3>
+        <h3>${item.title}</h3>
         <span class="page-meta">${dateLabel} · ${stateLabel} · ${kindLabel}</span>
       </div>
-      ${linksMarkup}
+      ${summaryMarkup}
+      ${tagsMarkup}
+      ${buttonsMarkup}
     `;
+
+    const openDetail = (e) => {
+      if (e.target.closest(".external-btn")) return;
+      showBlogDetail(item.slug);
+    };
+
+    card.addEventListener("click", openDetail);
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openDetail(e);
+      }
+    });
+
     root.appendChild(card);
   });
 };
@@ -292,43 +425,51 @@ const renderProjectList = (projects) => {
 
   projects.forEach((item) => {
     const dateLabel = normalizeLabel(item.year, "TBD");
-    const stateLabel = projectState(item.status);
+    const stateLabel = formatStatus(item.status);
     const kindLabel = "Project";
     const card = document.createElement("article");
-    card.className = "page-card";
-    const link = item.link || "#";
-    if (item.link) {
-      card.classList.add("is-clickable");
-      card.tabIndex = 0;
-      const navigate = () => {
-        window.location.href = link;
-      };
-      card.addEventListener("click", navigate);
-      card.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          navigate();
-        }
-      });
-    }
-    const linkMarkup =
-      item.link
-        ? `<a class="page-link" href="${link}">View project</a>`
-        : `<span class="page-link is-muted">Link coming soon</span>`;
+    card.className = "page-card is-clickable";
+    card.tabIndex = 0;
+
+    const githubButton = item.link
+      ? `<a class="external-btn external-btn-small" href="${item.link}" target="_blank" rel="noopener noreferrer">GitHub</a>`
+      : "";
+    const buttonsMarkup = githubButton ? `<div class="external-buttons">${githubButton}</div>` : "";
+    const tagsMarkup = renderTags(item.tags);
+
     card.innerHTML = `
       <div class="page-card-header">
         <h3>${item.title}</h3>
         <span class="page-meta">${dateLabel} · ${stateLabel} · ${kindLabel}</span>
       </div>
       <p class="page-summary">${item.summary || ""}</p>
-      ${linkMarkup}
+      ${tagsMarkup}
+      ${buttonsMarkup}
     `;
+
+    const openDetail = (e) => {
+      if (e.target.closest(".external-btn")) return;
+      showProjectDetail(item.slug);
+    };
+
+    card.addEventListener("click", openDetail);
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openDetail(e);
+      }
+    });
+
     root.appendChild(card);
   });
 };
 
 const initData = async () => {
-  const [blogs, projects] = await Promise.all([fetchJson("/blogs.json"), fetchJson("/projects.json")]);
+  const contents = await fetchJson("/contents.json");
+  const blogs = contents.blogs || [];
+  const projects = contents.projects || [];
+  cachedBlogs = blogs;
+  cachedProjects = projects;
   const timeline = buildTimeline(blogs, projects);
   renderTimeline(timeline);
   renderBlogList(blogs);

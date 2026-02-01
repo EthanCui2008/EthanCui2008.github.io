@@ -1,0 +1,48 @@
+{
+  "blogs": [
+    {
+      "slug": "understanding-shader-uniforms",
+      "title": "Understanding Shader Uniforms",
+      "summary": "A deep dive into how uniforms work in GLSL shaders, including best practices for passing data from JavaScript to your GPU programs.",
+      "date": "2025-01-15",
+      "tags": ["shaders", "webgl", "glsl", "tutorial"],
+      "status": "published",
+      "substack": "https://substack.com/",
+      "medium": "https://medium.com/",
+      "content": "Uniforms are one of the most powerful features in GLSL shaders. They allow you to pass data from your JavaScript application directly to your GPU programs, enabling dynamic and interactive graphics.\n\n## What are Uniforms?\n\nUniforms are global variables that remain constant across all vertices and fragments during a single draw call. Unlike attributes (which vary per vertex) or varyings (which interpolate across fragments), uniforms stay the same for every invocation of your shader.\n\n## Common Use Cases\n\n- **Time-based animations**: Pass elapsed time to create smooth animations\n- **Mouse interaction**: Send cursor position for interactive effects\n- **Resolution**: Provide canvas dimensions for proper coordinate calculations\n- **Colors and parameters**: Dynamic control over visual appearance\n\n## Best Practices\n\n1. **Minimize uniform updates** - Batch changes when possible\n2. **Use appropriate precision** - `mediump` is often sufficient\n3. **Cache uniform locations** - Don't look them up every frame\n4. **Group related uniforms** - Consider using uniform buffer objects for complex data"
+    },
+    {
+      "slug": "building-interactive-data-viz",
+      "title": "Building Interactive Data Visualizations",
+      "summary": "Exploring techniques for creating responsive, performant data visualizations using Canvas and SVG with smooth animations.",
+      "date": "2025-01-08",
+      "tags": ["data-viz", "canvas", "svg", "javascript"],
+      "status": "published",
+      "substack": "https://substack.com/",
+      "medium": "https://medium.com/",
+      "content": "Data visualization is the art of turning numbers into stories. When done well, it can reveal patterns and insights that would be invisible in raw data.\n\n## Choosing Your Rendering Method\n\n### SVG\n- Best for smaller datasets (< 1000 elements)\n- Built-in interactivity and accessibility\n- Easy styling with CSS\n- DOM-based, so each element is inspectable\n\n### Canvas\n- Better performance for large datasets\n- Pixel-perfect control\n- Requires manual hit detection for interactivity\n- Single element in DOM\n\n## Animation Principles\n\n1. **Easing functions** - Linear motion feels robotic; use ease-out for responsive UI\n2. **Staggered transitions** - Animate elements sequentially for visual interest\n3. **Meaningful motion** - Movement should convey information, not just decoration\n\n## Performance Tips\n\n- Use `requestAnimationFrame` for smooth 60fps animations\n- Debounce resize handlers\n- Consider web workers for heavy data processing\n- Virtualize large lists - only render visible elements"
+    }
+  ],
+  "projects": [
+    {
+      "slug": "shader-playground",
+      "title": "Shader Playground",
+      "summary": "A real-time WebGL shader editor with live preview, syntax highlighting, and a library of example shaders to learn from.",
+      "year": "2025",
+      "tags": ["webgl", "shaders", "tools", "editor"],
+      "status": "in-progress",
+      "link": "https://github.com/",
+      "content": "Shader Playground is an interactive development environment for learning and experimenting with GLSL shaders.\n\n## Features\n\n- **Live preview** - See your changes instantly as you type\n- **Syntax highlighting** - Full GLSL syntax support with error highlighting\n- **Example library** - Curated collection of shader examples to learn from\n- **Uniform controls** - Auto-generated UI for tweaking shader parameters\n- **Export options** - Save as images or copy shader code\n\n## Technical Stack\n\n- WebGL 2.0 for rendering\n- CodeMirror for the editor\n- Custom GLSL parser for error detection\n- IndexedDB for saving user shaders\n\n## Roadmap\n\n- [ ] Multi-pass rendering support\n- [ ] Texture upload and sampling\n- [ ] Shader sharing via URL\n- [ ] Audio reactive uniforms"
+    },
+    {
+      "slug": "motion-design-system",
+      "title": "Motion Design System",
+      "summary": "A collection of reusable animation primitives and easing functions for building consistent, delightful UI motion.",
+      "year": "2024",
+      "tags": ["animation", "ui", "design-system", "css"],
+      "status": "completed",
+      "link": "https://github.com/",
+      "content": "A comprehensive motion design system that provides consistent, performant animations across web applications.\n\n## Core Principles\n\n1. **Purposeful** - Every animation serves a function\n2. **Responsive** - Adapts to user preferences (reduced motion)\n3. **Performant** - GPU-accelerated, 60fps target\n4. **Consistent** - Unified timing and easing across the system\n\n## What's Included\n\n### Easing Functions\n- Standard curves (ease-in, ease-out, ease-in-out)\n- Spring physics simulations\n- Custom bezier curve generator\n\n### Animation Primitives\n- Fade, scale, slide, rotate\n- Stagger and orchestration utilities\n- Enter/exit transition helpers\n\n### React Components\n- `<Motion>` wrapper component\n- `<AnimatePresence>` for exit animations\n- `useMotion` hook for imperative control\n\n## Browser Support\n\nModern browsers with CSS custom properties support. Graceful degradation for older browsers."
+    }
+  ]
+}
