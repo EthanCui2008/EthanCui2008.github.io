@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 180" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <style>
+      .land { fill: #d8d8d8; stroke: #bbb; stroke-width: 0.3; }
+      .timezone-pst { fill: rgba(255, 140, 50, 0.28); }
+      .location-dot { fill: #e86f45; }
+      .location-pulse { fill: rgba(232, 111, 69, 0.35); }
+    </style>
+  </defs>
+
+  <!-- PST Timezone band (UTC-8, roughly 120W to 127.5W longitude) -->
+  <!-- In our 360-wide view: x = 180 + longitude, so -127.5 to -120 = 52.5 to 60 -->
+  <rect class="timezone-pst" x="52" y="0" width="10" height="180" />
+
+  <!-- Simplified world continents -->
+  <g class="land">
+    <!-- North America -->
+    <path d="M40,25 L95,25 L100,35 L95,45 L100,55 L90,70 L75,75 L60,85 L50,80 L45,70 L35,65 L30,50 L35,35 Z"/>
+    <!-- Central America -->
+    <path d="M55,85 L65,90 L60,100 L50,95 Z"/>
+    <!-- South America -->
+    <path d="M70,100 L85,105 L90,120 L85,140 L75,155 L60,150 L55,130 L60,115 L65,105 Z"/>
+    <!-- Europe -->
+    <path d="M160,30 L180,25 L190,30 L185,40 L175,45 L165,40 L155,45 L150,35 Z"/>
+    <!-- Africa -->
+    <path d="M155,55 L180,50 L195,60 L190,80 L180,100 L165,105 L150,95 L145,75 L150,60 Z"/>
+    <!-- Asia -->
+    <path d="M195,20 L250,15 L280,25 L290,40 L285,55 L270,60 L250,55 L230,60 L210,55 L200,45 L190,35 Z"/>
+    <!-- Middle East -->
+    <path d="M195,45 L215,50 L210,60 L195,55 Z"/>
+    <!-- India -->
+    <path d="M230,60 L245,65 L240,80 L225,75 Z"/>
+    <!-- Southeast Asia -->
+    <path d="M255,60 L275,65 L280,80 L270,90 L255,85 L250,70 Z"/>
+    <!-- Australia -->
+    <path d="M280,110 L310,105 L320,115 L315,130 L300,140 L280,135 L275,120 Z"/>
+    <!-- Indonesia -->
+    <path d="M260,95 L275,95 L280,100 L265,102 Z"/>
+    <!-- Japan -->
+    <path d="M295,40 L302,38 L305,45 L298,50 Z"/>
+    <!-- UK -->
+    <path d="M155,30 L160,28 L158,35 L153,34 Z"/>
+    <!-- Greenland -->
+    <path d="M100,10 L120,8 L125,20 L115,28 L100,25 Z"/>
+  </g>
+
+  <!-- Mountain View, CA location: 37.4°N, 122°W -->
+  <!-- In SVG coords: x = 180 + (-122) = 58, y = 90 - 37.4 = 52.6 -->
+  <circle class="location-pulse" cx="58" cy="52.6" r="6">
+    <animate attributeName="r" values="4;8;4" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.2;0.5" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle class="location-dot" cx="58" cy="52.6" r="3"/>
+</svg>

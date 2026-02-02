@@ -13,20 +13,32 @@
   --shadow-color: #b0b0b0;
   --btn-shadow: 3px 3px 0 0 var(--shadow-color);
   --btn-shadow-hover: 2px 2px 0 0 var(--shadow-color);
-  --btn-shadow-active: 1px 1px 0 0 var(--shadow-color);
+  --btn-shadow-active: 0 0 0 0 var(--shadow-color);
   --btn-shadow-small: 2px 2px 0 0 var(--shadow-color);
   --btn-shadow-small-hover: 1px 1px 0 0 var(--shadow-color);
   --btn-shadow-small-active: 0 0 0 0 var(--shadow-color);
-  --color-home: #7cb88a;
-  --color-blog: #e8a090;
-  --color-projects: #90bce8;
-  --color-substack: #ffb088;
-  --color-medium: #cccccc;
-  --color-github: #c0c0c0;
-  --color-email: #f0a8a0;
-  --color-linkedin: #a0d0f0;
-  --color-discord: #b8c0f8;
-  --color-tag: #d8e0e8;
+  --button-saturation: 1.35;
+  --color-home: #6bc08d;
+  /* avocado green */
+  --color-blog: #e2775f;
+  /* clay peach */
+  --color-projects: #619cdf;
+  /* denim blue */
+  --color-substack: #D98763;
+  /* burnt apricot */
+  --color-medium: #A9AEB8;
+  /* warm concrete */
+  --color-github: #9EA3AB;
+  /* typewriter gray */
+  --color-email: #C87873;
+  /* terracotta rose */
+  --color-linkedin: #6EA6C6;
+  /* pool blue */
+  --color-discord: #8E96D8;
+  /* poster violet */
+  --color-tag: #B8C4CF;
+  /* paper blue */
+
 }
 
 *,
@@ -98,8 +110,8 @@ p {
 
 .profile-card {
   display: grid;
-  gap: 1.1rem;
-  padding-bottom: 1.1rem;
+  gap: 0.85rem;
+  padding-bottom: 0.85rem;
   border-bottom: 1px solid var(--border-color);
   animation: fadeUp 0.7s ease-out both;
 }
@@ -107,8 +119,16 @@ p {
 .profile-header {
   display: grid;
   grid-template-columns: 72px 1fr;
+  grid-template-rows: auto auto;
   gap: 1rem;
-  align-items: center;
+  align-items: start;
+}
+
+.profile-header .education-info {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: grid;
+  gap: 0.15rem;
 }
 
 .profile-photo {
@@ -185,7 +205,8 @@ p {
   text-transform: none;
   text-decoration: none;
   box-shadow: var(--btn-shadow);
-  transition: box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+  filter: saturate(var(--button-saturation));
+  transition: box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease, filter 0.15s ease;
 }
 
 .page-nav-btn[data-section="home"] {
@@ -207,52 +228,30 @@ p {
 
 .page-nav-btn:active {
   box-shadow: var(--btn-shadow-active);
-  transform: translate(2px, 2px);
+  transform: translate(3px, 3px);
+  filter: saturate(var(--button-saturation)) brightness(0.85);
 }
 
 .page-nav-btn.is-active {
   color: #000000;
   box-shadow: var(--btn-shadow-active);
-  transform: translate(2px, 2px);
+  transform: translate(3px, 3px);
+  filter: saturate(var(--button-saturation)) brightness(0.85);
 }
 
 .location-card {
   display: grid;
-  gap: 0.5rem;
-}
-
-.mini-map {
-  display: none;
-}
-
-.mini-map img {
-  display: none;
-}
-
-.pst-glow {
-  position: absolute;
-  left: calc(var(--map-pad) + (100% - (var(--map-pad) * 2)) * var(--map-x));
-  top: calc(var(--map-pad) + (100% - (var(--map-pad) * 2)) * var(--map-y));
-  transform: translate(-50%, -50%);
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: rgba(53, 78, 83, 0.26);
-  filter: blur(0.3px);
-}
-
-.pst-dot {
-  position: absolute;
-  left: calc(var(--map-pad) + (100% - (var(--map-pad) * 2)) * var(--map-x));
-  top: calc(var(--map-pad) + (100% - (var(--map-pad) * 2)) * var(--map-y));
-  transform: translate(-50%, -50%);
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #354e53;
+  gap: 0;
 }
 
 .location-meta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(251, 251, 251, 0.92);
+  padding: 0.5rem;
+  border-top: 1px solid var(--border-color);
   display: grid;
   gap: 0.15rem;
 }
@@ -264,6 +263,22 @@ p {
 .location-meta span {
   font-size: 0.75rem;
   color: #2a3a42;
+}
+
+/* World Map */
+.world-map {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  box-shadow: var(--btn-shadow-small);
+}
+
+.world-map img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .socials {
@@ -282,7 +297,8 @@ p {
   place-items: center;
   background: #ffffff;
   box-shadow: var(--btn-shadow);
-  transition: box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+  filter: saturate(var(--button-saturation));
+  transition: box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease, filter 0.15s ease;
 }
 
 .socials a[aria-label="Email"] {
@@ -336,9 +352,13 @@ p {
 }
 
 .timeline-list {
-  --timeline-dot: 5px;
+  --timeline-dot: 4px;
   --timeline-line-width: 1px;
   --timeline-line-color: #000000;
+  --timeline-indent: 1.2rem;
+  --timeline-item-pad-y: 0.35rem;
+  --timeline-line-shift-y: 4px;
+  --timeline-connector-y: calc(0.8rem + var(--timeline-line-shift-y));
   list-style: none;
   margin: 0;
   padding: 0;
@@ -350,7 +370,7 @@ p {
   position: absolute;
   left: calc(var(--timeline-dot) / 2);
   top: 0;
-  bottom: 0;
+  bottom: var(--timeline-line-bottom, var(--timeline-item-pad-y));
   width: var(--timeline-line-width);
   background: var(--timeline-line-color);
   transform: translateX(-50%);
@@ -360,19 +380,18 @@ p {
 .timeline-item {
   position: relative;
   z-index: 1;
-  padding: 0.35rem 0 0.35rem 1.1rem;
+  padding: var(--timeline-item-pad-y) 0 var(--timeline-item-pad-y) var(--timeline-indent);
 }
 
 .timeline-item::before {
   content: "";
   position: absolute;
   left: calc(var(--timeline-dot) / 2);
-  top: 0.8rem;
-  width: var(--timeline-dot);
-  height: var(--timeline-dot);
-  border-radius: 50%;
+  top: var(--timeline-connector-y);
+  width: calc(var(--timeline-indent) - (var(--timeline-dot) / 2));
+  height: var(--timeline-line-width);
   background: var(--timeline-line-color);
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
   z-index: 2;
 }
 
@@ -626,7 +645,8 @@ p {
   border: 1px solid var(--border-color);
   cursor: pointer;
   box-shadow: var(--btn-shadow);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  filter: saturate(var(--button-saturation));
+  transition: box-shadow 0.15s ease, transform 0.15s ease, filter 0.15s ease;
 }
 
 .back-btn:hover {
@@ -652,7 +672,8 @@ p {
   border: 1px solid var(--border-color);
   text-decoration: none;
   box-shadow: var(--btn-shadow);
-  transition: box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+  filter: saturate(var(--button-saturation));
+  transition: box-shadow 0.15s ease, transform 0.15s ease, background-color 0.15s ease, filter 0.15s ease;
 }
 
 .external-btn[href*="substack"] {

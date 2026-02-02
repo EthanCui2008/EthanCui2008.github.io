@@ -191,6 +191,33 @@ const buildTimeline = (blogs, projects) => {
     .slice(0, TIMELINE_LIMIT);
 };
 
+const syncTimelineLine = (root) => {
+  root.style.removeProperty("--timeline-line-bottom");
+
+  const lastItem = root.querySelector(".timeline-item:last-child");
+  if (!lastItem) {
+    return;
+  }
+
+  const marker = document.createElement("span");
+  marker.setAttribute("aria-hidden", "true");
+  marker.style.position = "absolute";
+  marker.style.left = "0";
+  marker.style.top = "var(--timeline-connector-y)";
+  marker.style.width = "1px";
+  marker.style.height = "1px";
+  marker.style.pointerEvents = "none";
+  marker.style.visibility = "hidden";
+  lastItem.appendChild(marker);
+
+  const listRect = root.getBoundingClientRect();
+  const markerRect = marker.getBoundingClientRect();
+  marker.remove();
+
+  const bottom = Math.max(0, listRect.bottom - markerRect.top);
+  root.style.setProperty("--timeline-line-bottom", `${bottom}px`);
+};
+
 const renderTimeline = (items) => {
   const root = document.querySelector("#timeline");
   if (!root) {
@@ -203,6 +230,7 @@ const renderTimeline = (items) => {
     empty.className = "timeline-item";
     empty.textContent = "No updates yet.";
     root.appendChild(empty);
+    syncTimelineLine(root);
     return;
   }
 
@@ -237,6 +265,7 @@ const renderTimeline = (items) => {
     li.appendChild(wrapper);
     root.appendChild(li);
   });
+  syncTimelineLine(root);
 };
 
 const formatStatus = (status) => {
