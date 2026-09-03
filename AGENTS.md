@@ -21,8 +21,12 @@ This is a personal portfolio/website hosted on GitHub Pages at `EthanCui2008.git
 ├── styles.css      # Global styles
 ├── main.js         # JavaScript functionality
 ├── favicon.ico     # Site favicon
+├── keys/           # Mobile-only contact card (see below)
+│   ├── index.html
+│   ├── keys.js     # Obfuscated payload + device gate
+│   ├── encode.mjs  # Regenerates the payload from keys/.env
+│   └── .env.example
 └── svg-img/        # SVG icons and images
-    ├── discord-icon.svg
     ├── email-icon.svg
     ├── github-icon.svg
     ├── linkedin-icon.svg
@@ -47,6 +51,18 @@ This is a personal portfolio/website hosted on GitHub Pages at `EthanCui2008.git
 - Use proper heading hierarchy
 - Ensure sufficient color contrast
 - Support keyboard navigation
+
+## The /keys/ page
+
+`/keys/` is an unlinked contact card that renders only on coarse-pointer viewports
+under 900px (JS gate plus a CSS backstop). Its values live in `keys/.env`, which is
+gitignored and therefore never deploys — GitHub Pages is static, so nothing reads it
+at runtime. `node keys/encode.mjs` bakes an XOR+base64 copy into `keys/keys.js`
+between the `payload:start`/`payload:end` markers.
+
+That encoding is **obfuscation, not encryption**: the key ships with the data, so
+anyone using devtools can read it. It keeps values out of plain page source and away
+from scrapers. Never hand-edit `PAYLOAD`, and keep real values out of `.env.example`.
 
 ## Deployment
 
