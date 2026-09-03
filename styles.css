@@ -828,12 +828,6 @@ p {
   line-height: 1.05;
 }
 
-.keys-sub {
-  margin-top: 0.35rem;
-  font-size: 0.85rem;
-  color: #2a3a42;
-}
-
 .keys-card,
 .keys-notice {
   background: #ffffff;
@@ -867,39 +861,13 @@ p {
   font-size: 1.05rem;
   font-weight: 600;
   word-break: break-word;
-  color: rgba(34, 34, 34, 0.45);
-  letter-spacing: 0.08em;
-}
-
-.keys-card.is-revealed .keys-value {
   color: var(--ink);
-  letter-spacing: 0;
 }
 
 .keys-value a {
   color: inherit;
   text-decoration: none;
   border-bottom: 1px solid var(--border-color);
-}
-
-.keys-reveal {
-  padding: 0.7rem 0.9rem;
-  font-family: inherit;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #000000;
-  background: var(--color-home);
-  border: 1px solid var(--border-color);
-  cursor: pointer;
-  box-shadow: var(--btn-shadow);
-  filter: saturate(var(--button-saturation));
-  transition: box-shadow 0.15s ease, transform 0.15s ease, filter 0.15s ease;
-}
-
-.keys-reveal:active {
-  box-shadow: var(--btn-shadow-active);
-  transform: translate(3px, 3px);
-  filter: saturate(var(--button-saturation)) brightness(0.85);
 }
 
 .keys-notice {

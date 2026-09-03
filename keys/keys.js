@@ -76,13 +76,10 @@ const setField = (field, value) => {
   el.textContent = value;
 };
 
-const reveal = () => {
+const fillFields = () => {
   Object.entries(PAYLOAD.d).forEach(([field, encoded]) => {
     setField(field, decode(encoded, PAYLOAD.k));
   });
-  const button = document.querySelector(".keys-reveal");
-  if (button) button.hidden = true;
-  document.querySelector(".keys-card")?.classList.add("is-revealed");
 };
 
 const setupMobileWatch = () => {
@@ -98,4 +95,4 @@ const setupMobileWatch = () => {
 renderPalette();
 applyDevice();
 setupMobileWatch();
-document.querySelector(".keys-reveal")?.addEventListener("click", reveal);
+fillFields();
